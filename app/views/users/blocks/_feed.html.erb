@@ -1,0 +1,59 @@
+ <% @user_posts.each do |ups|%>
+    <div class="post_block mb-5 bg-white rounded-lg p-2">
+        <div class="flex flex-row">
+            <a href="/users/<%= ups.user.id %>" class="w-auto h-auto rounded-full">
+                <img class="w-12 h-12 object-cover rounded-full shadow cursor-pointer" alt="User avatar" src="<%= url_for(ups.user.avatar) %>">
+            </a>
+            <div class="flex flex-col mb-2 ml-4 mt-1">
+                <div class="text-gray-600 text-sm font-semibold"><%= ups.user.login %></div>
+
+                <div class="flex w-full mt-1">
+                    <div class="text-blue-700 font-base text-xs mr-1 cursor-pointer">
+                        <%= ups.user.user_role.name %>
+                    </div>
+                    <div class="text-gray-400 font-thin text-xs">
+                        • <%= l(Time.now, format: :short) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-b border-gray-100"></div>
+        <div>
+            <div class="py-2">
+                <% if ups.is_a?(Event.class) %>
+                    <span><%= link_to ups.title, event_path(ups), class:"text-gray-700 text-xl py-2" %></span>
+                <% else %>
+                    <span><%= link_to ups.title, article_path(ups), class:"text-gray-700 text-xl py-2" %></span>
+                <% end %>
+            </div>
+            <div class=" overflow-hidden rounded-xl col-span-3 max-h-[14rem]">
+                <img class="h-full w-full object-cover " src="<%= url_for(ups.header) %>" alt=""/>
+            </div>
+            <h1 class="pt-2 px-1"><%= ups.content.to_s[0...150] %>..</h1>
+            <% if ups.is_a?(Event.class) %>
+                <span><%= link_to "Читать дальше", event_path(ups), class:"text-blue-300" %></span>
+            <% else %>
+                <span><%= link_to "Читать дальше", article_path(ups), class:"text-blue-300" %></span>
+            <% end %>
+        </div>
+        <div class="flex w-full fw-bold border-t mt-5 border-gray-100">
+            <div class="mt-1  flex gap-5 flex-row text-xs">
+                <%if ups.is_a?(Event) %>
+                    <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-xl"> <%= ups.event_comments.count %></span></p>
+                <% else %>
+                    <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-ms"> <%= ups.articles_comments.count %></span></p>
+                <% end %>
+                <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Просмотров: <span class="ml-1 text-gray-400 text-ms"> <%= ups.impressionist_count %></span></p>
+            </div>
+            <div class="mt-1 mx-5 w-full flex justify-end text-xs">
+                <p class="flex text-gray-700  rounded-md mb-2 mr-4 items-center">Лайков: <span class="ml-1 text-gray-400  text-ms">
+                    <% if ups.is_a? Event.class %>
+                        <%= likes_e(ups.id) %></span>
+                    <% else %>
+                        <%= likes_a(ups.id) %></span>
+                    <% end %>
+                </p>
+            </div>
+        </div>
+    </div>
+<% end %>

@@ -1,0 +1,57 @@
+<style>
+  body {
+  height:100vh;
+}
+
+.mainBlock{
+  overflow-y: scroll;
+}
+
+</style>
+<div class="mainBlock flex w-full md:p-12 lg:p-12 p-4">
+    <div class="w-full">
+      <%# <div id="image-container" class="bg-center bg-cover bg-no-repeat h-[30vh] mb-10 w-full bg-gray-200" ></div> %>
+      <% if @update.errors.any? %>
+        <div style="color: red">
+          <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
+
+          <ul>
+            <% update.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+      <%= form_with(model: @update) do |form| %>
+
+        <div class="md:mb-5 lg:mb-5 grid gap-3 md:grid-cols-2 lg:grind-cols-2">
+          <div>
+            <label for="name"
+            class="mb-3 block text-base font-medium text-[#07074D]">
+            Заголовок
+          </label>
+          <%= form.text_field :title, placeholder:"Заголовок статьи", class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+        </div>
+        <div class="mb-5">
+          <label for="subject"
+            class="mb-3 block text-base font-medium text-[#07074D]">
+            Тэги
+          </label>
+          <%= form.text_field :tag_list, placeholder:"Напиши 5 тэгов через запятую", value: @update.tag_list.join(', '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+
+        </div>
+      </div>
+      <div data-controller="file-upload">
+        <label class="mb-3 block text-base font-medium text-[#07074D]">Загрузите обложку вашей статьи</label>
+        <%= form.file_field :header, data: { file_upload_target: 'preview' } %>
+      </div>
+      <div class="mt-5 mb-5">
+        <label for="message" class="mb-3 block text-base font-medium text-[#07074D]">
+          Текст статьи
+        </label>
+        <%= form.text_area :body, size: "70x5", class:"w-full h-96 resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+      </div>
+      <%= form.submit class:"hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none  h-full" %>
+    <% end %>
+  </div>
+</div>

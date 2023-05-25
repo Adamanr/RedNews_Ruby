@@ -1,0 +1,56 @@
+
+
+<style>
+html,body{height:100%;-webkit-font-smoothing:antialiased;scrollbar-width:none;-ms-overflow-style:none}body::-webkit-scrollbar{display:none}::-moz-selection{color:white;background:#10b981}::selection{color:white;background:#10b981}
+.object-cover{
+  position:center;
+}
+</style>
+
+<% if items.any? %>
+
+    <% items.each do |item| %>
+   <%= url_for(item.header.variant(resize_to_fill: [1000, 1000])) %>); height:40vh; background-size:100%; background-position:center;">
+      
+
+      <div class="py-1">
+        <div class="p-5">
+          <h2 class="truncate font-bold mb-2 md:mt-4 text-2xl text-gray-800 tracking-normal"><%= item.title %></h2>
+
+          <p class="break-words text-sm text-gray-700 mr-1"><%= item.body %></p>
+
+        </div>
+
+        <div class="flex items-center justify-between p-2 md:p-4 md:mx-4">
+          <a target="_blank" rel="noreferrer noopener" href="https://timesofindia.indiatimes.com/india/international-space-station-to-retire-in-2030-will-fall-into-pacific-ocean-a-year-later-nasa/articleshow/89392862.cms">
+            <div class="flex items-center">
+              <div class="text-sm ml-2">
+
+                <p class="text-black leading-none">The Times of India</p>
+
+
+
+                <p class="text-gray-700"><% item.created_at %></p>
+
+              </div>
+            </div>
+          </a>
+          <a target="_blank" rel="noreferrer noopener" href="https://timesofindia.indiatimes.com/india/international-space-station-to-retire-in-2030-will-fall-into-pacific-ocean-a-year-later-nasa/articleshow/89392862.cms"
+            class="bg-green-500 hover:bg-green-600 text-white rounded-full px-8 py-2">
+            Read More
+          </a>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+
+  <% else %>
+    <p>No items found.</p>
+  <% end %>
+
+</body>
+<script type="text/javascript">
+let h=document.documentElement,b=document.body,st="scrollTop",sh="scrollHeight",progress=document.querySelector("#progress"),scroll;let scrollpos=window.scrollY;let header=document.getElementById("header");let navcontent=document.getElementById("nav-content");document.addEventListener("scroll",function(){scroll=(h[st]||b[st])/((h[sh]||b[sh])-h.clientHeight)*100;progress.style.setProperty("--scroll",scroll+"%");scrollpos=window.scrollY;if(scrollpos>10){header.classList.add("bg-white");header.classList.add("shadow-xl");navcontent.classList.remove("bg-gray-50");navcontent.classList.add("bg-white")}else{header.classList.remove("bg-white");header.classList.remove("shadow-xl");navcontent.classList.remove("bg-white");navcontent.classList.add("bg-gray-50")}});
+</script>
+ <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>

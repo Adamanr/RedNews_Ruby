@@ -1,0 +1,79 @@
+<style>
+  .profile-page::-webkit-scrollbar {
+    width:0;
+  }
+</style>
+<main class="profile-page  max-w-8xl md:px-4 mx-auto md:rounded-lg overflow-y-scroll h-full">
+  <section class="relative mt-10 container mx-auto md:px-4 h-1/2 rounded-t-lg bg-fill"  style="background-image: url('https://sun9-22.userapi.com/impg/nGSELvL0BZaoxDus6KUrkAZ2811rTlkD4bnsPQ/1gnWor2F4mY.jpg?size=1280x1280&quality=96&sign=cfe8c0c4c28cbea52cd9257555d19fdb&type=album')">
+      <a href="/editions" class="absolute top-4 left-8 border-2 border-rose-500 p-2 bg-rose-500 font-bold rounded-lg text-white ">Назад</a>
+  </section>
+  <section class="relative py-12 bg-blueGray-200">
+    <div class="md:container md:mx-auto ">
+      <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg -mt-64">
+        <div class="px-6">
+          <div class="flex flex-wrap w-full justify-center">
+            <div class="w-full lg:w-3/12  lg:order-2 flex justify-center">
+              <div class="relative">
+                <img alt="..." src="<%= url_for(@edition.logo) %>" class="mt-2 rounded-lg shadow-xl md:rounded-full h-auto align-middle border-none md:absolute md:-m-56 md:-ml-24 md:-ml-[9.5rem] ml-18 lg:-ml-48 lg:max-w-sm md:max-w-xs sn:max-w-xs">
+              </div>
+            </div>
+
+          <div class="w-full grid grid-cols-2 ms-5 lg:w-4/12 lg:order-3 lg:text-right lg:self-center">
+              <div class="py-6 w-full md:px-3 mt-2  sm:mt-0">
+                <a href="/events/new"><button class="bg-pink-500 sn:w-full active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
+                    Написать статью
+                  </button>
+                </a >
+              </div>
+              <div class="py-6 w-full md:px-3 mt-2  sm:mt-0" data-controller="subscribe">
+                <%if !@subscribe.nil? %>
+                  <button data-action="click->subscribe#unsub" data-subscribe-target="subscribe" value="<%= @edition.id.to_s + " " + current_user.id.to_s %>" class="bg-pink-500 w-full active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                    Отписаться
+                  </button>
+                <% else %>
+                  <button data-action="click->subscribe#sub" data-subscribe-target="subscribe" value="<%= @edition.id.to_s + " " + current_user.id.to_s %>" class="bg-emerald-500 w-full active:bg-emerald-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150" type="button">
+                    Подписаться
+                  </button>
+                <% end %>
+              </div>
+            </div>
+
+            <div class="w-full lg:w-4/12 px-4 lg:order-1">
+              <div class="flex flex-wrap justify-center py-4 lg:pt-4 pt-8">
+                <div class="mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= link_to @edition.user.login, user_path(@edition.user) %></span><span class="text-sm text-blueGray-400">Создатель</span>
+                </div>
+                <div class="mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= @edition_news_count %></span><span class="text-sm text-blueGray-400">Новости</span>
+                </div>
+                <div class="lg:mr-4 p-3 text-center">
+                  <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600"><%= @edition.user.city %></span><span class="text-sm text-blueGray-400">Город</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-12">
+            <h3 class="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+              <%= @edition.name %>
+            </h3>
+              <p class="mb-4 text-lg leading-relaxed text-blueGray-700">
+                  <%= @edition.desc %>
+                </p>
+
+            <div class="mb-2 text-blueGray-600 mt-10">
+              <i class="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i><%= @edition.category %>
+            </div>
+          </div>
+          <div class="mt-10 py-10 border-t border-blueGray-200 text-center">
+            <div class="justify-center">
+              <a href="/editions/<%= @edition.id %>/posts" class="w-full justify-center flex w-full lg:w-9/12 px-4 mx-auto font-normal ps-2 text-2xl text-pink-500">
+                <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M3 12C3 4.5885 4.5885 3 12 3C19.4115 3 21 4.5885 21 12C21 19.4115 19.4115 21 12 21C4.5885 21 3 19.4115 3 12Z" stroke="#ec4899" stroke-width="2"></path> <path d="M12 16L12 8" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M9 13L11.913 15.913V15.913C11.961 15.961 12.039 15.961 12.087 15.913V15.913L15 13" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                Новости издательства
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

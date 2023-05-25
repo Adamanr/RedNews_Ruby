@@ -1,0 +1,71 @@
+<!--
+Include Tailwind JIT CDN compiler
+More info: https://beyondco.de/blog/tailwind-jit-compiler-via-cdn
+-->
+<script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+
+<!-- Snippet -->
+<style>
+    .tagSection::-webkit-scrollbar {
+        width:0;
+    }
+</style>
+<section class="tagSection justify-center antialiased overflow-y-scroll h-full">
+
+    <h1 class="max-w-6xl mt-4 mx-auto p-4 mb-4 sm:px-6 text-3xl font-bold ">Статьи по тэгу - <span class="text-blue-500"><%= params[:tag] %></span></h1>
+    <% @articles.each do |a|%>
+
+        <div class="max-w-6xl sn:mt-4 md:mt-0 mx-auto p-4 sm:px-6 text-gray-200">
+            <!-- Blog post -->
+            <article class="max-w-sm mx-auto md:max-w-none grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 xl:gap-16 items-center">
+                <a class="relative block group" href="/articles/<%= a.id %>">
+                    <div class="absolute inset-0 bg-gray-800 hidden md:block transform md:translate-y-2 md:translate-x-4 xl:translate-y-4 xl:translate-x-8 group-hover:translate-x-0 group-hover:translate-y-0 transition duration-700 ease-out pointer-events-none" aria-hidden="true"></div>
+                    <figure class="relative h-0 pb-[56.25%] md:pb-[75%] lg:pb-[56.25%] overflow-hidden transform md:-translate-y-2 xl:-translate-y-4 group-hover:translate-x-0 group-hover:translate-y-0 transition duration-700 ease-out">
+                        <img class="absolute inset-0 w-full h-full object-full transform hover:scale-105 transition duration-700 ease-out" src="<%= url_for(a.header) %>" width="540" height="303" alt="Blog post">
+                    </figure>
+                </a>
+                <div>
+                    <header>
+                        <div class="mb-3">
+                            <ul class="flex flex-wrap text-xs font-medium -m-1">
+                                <% a.tags.each do |t| %>
+                                <li class="m-1">
+                                    <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name %></a>
+                                </li>
+                                <% end %>
+                            </ul>
+                        </div>
+                        <h3 class="text-2xl lg:text-3xl font-bold leading-tight mb-2">
+                            <a class="hover:text-gray-400 text-gray-900 transition duration-150 ease-in-out" href="/articles/<%= a.id %>"><%= a.title %></a>
+                        </h3>
+                    </header>
+                    <p class="text-lg text-gray-400 flex-grow"><%= a.body[0..150] + '...' %></p>
+                    <footer class="flex items-center mt-4">
+                        <a href="/articles/<%= a.id %>">
+                            <img class="rounded-full h-8 w-8 flex-shrink-0 mr-4" src="<%= url_for(a.header) %>" alt="Author 04">
+                        </a>
+                        <div>
+                            <a class="font-medium text-gray-700 hover:text-gray-500 transition duration-150 ease-in-out" href="/users/<%=a.user.id %>"><%= a.user.login %></a>
+                            <span class="text-gray-700"> - </span>
+                            <span class="text-gray-500"><%= l( a.created_at, format: :short)%></span>
+                        </div>
+                    </footer>
+                </div>
+            </article>
+            <br><hr class="w-full text-center">
+        </div>
+    <% end %>
+</section>
+
+<!-- More components -->
+<div x-show="open" class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60" x-data="{ open: true }">
+    <div class="bg-gray-800 text-gray-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
+        <div>👉 <a class="hover:underline ml-1" href="/articles" target="_blank">Вернуться к статьям</a></div>
+        <button class="text-gray-500 hover:text-gray-400 ml-5" @click="open = false">
+            <span class="sr-only">Close</span>
+            <svg class="w-4 h-4 flex-shrink-0 fill-current" viewBox="0 0 16 16">
+                <path d="M12.72 3.293a1 1 0 00-1.415 0L8.012 6.586 4.72 3.293a1 1 0 00-1.414 1.414L6.598 8l-3.293 3.293a1 1 0 101.414 1.414l3.293-3.293 3.293 3.293a1 1 0 001.414-1.414L9.426 8l3.293-3.293a1 1 0 000-1.414z" />
+            </svg>
+        </button>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+<section class="bg-white dark:bg-[#f2f2f2]">
+    <div class="flex h-full bg-[#f2f2f2] justify-center min-h-screen">
+
+        <div class="flex items-center p-8 bg-[#f2f2f2] mx-auto lg:px-12 ">
+            <div class="w-full">
+
+
+                <h1 class="text-2xl font-semibold tracking-wider text-gray-800 capitalize dark:text-white">
+                    Вход в аккаунт
+                </h1>
+
+                <p class="mt-4 text-gray-500 dark:text-gray-400">
+                    Благодаря RedNews вы сможете получать самые актуальные новости на данный момент.<br>Если же у вас ещё нет аккаунта - <a href="/users/sign_up" class="text-blue-500">Регистрация</a> или перейдите на <a class="text-blue-500" href="/">Главная страница</a>
+                </p>
+
+                <%= form_for(resource, as: resource_name, class:"grid grid-cols-1 gap-6 mt-8 md:grid-cols-2", url: session_path(resource_name)) do |f| %>
+                  <div class="mt-4">
+                      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Почта</label>
+                      <%= f.email_field :email, autofocus: true,placeholder:"andrey@example.com", autocomplete: "email", class:"block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" %>
+                  </div>
+
+                  <div class="mt-4">
+                      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Пароль</label>
+                      <%= f.password_field :password, autocomplete: "current-password", placeholder:"Введите ваш пароль", class:"block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" %>
+                  </div>
+                  <div class="mt-4 mb-4">
+                    <% if devise_mapping.rememberable? %>
+                      <div class="field">
+                        <%= f.check_box :remember_me %>
+                        <%= f.label :Запомнить_меня %>
+                      </div>
+                    <% end %>
+                  </div>
+
+                  <button
+
+                      class="flex items-center justify-between w-full px-6 py-3 text-sm tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-md hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50">
+                      <%= f.submit "Авторизоваться" %>
+
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 rtl:-scale-x-100" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clip-rule="evenodd" />
+                      </svg>
+                  </button>
+                <% end %>
+            </div>
+        </div>
+        <div class="hidden bg-cover lg:block lg:w-2/5" style="background-image: url('https://sun9-31.userapi.com/impg/HA1pFhcgIe4Hzj6PIG1cnWGcj2YwazTW8ldF8A/2ON7ThyBkto.jpg?size=900x1080&quality=95&sign=46bbc7671fb3708640b6b08a8f63d095&type=album'); background-size: 100%; background-repeat: no-repeat; background-position: center;">
+        </div>
+    </div>
+</section>

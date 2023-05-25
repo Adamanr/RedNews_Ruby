@@ -1,0 +1,85 @@
+<div class="max-w-7xl mt-12 mx-auto">
+  <div>
+    <a href="/users/<%= current_user.id %>" class="p-[0.5em]"> Назад</a>
+  </div>
+  <section class=" p-6  bg-indigo-600 rounded-md shadow-md dark:bg-gray-800 ">
+    <h1 class="text-xl font-bold text-white capitalize dark:text-white">Редактирование профиля</h1>
+    <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+            <div class="row-span-2">
+                <label class="block text-sm font-medium text-white">
+                Image
+              </label>
+              <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                <div class="space-y-1 text-center">
+                  <svg class="mx-auto h-12 w-12 text-white" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                    <div class="flex text-sm text-gray-600">
+                      <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                        <span class="p-2">Upload a file</span>
+                          <div class="form-group">
+                            <div class="col-sm-8">
+                                <%= f.file_field :avatar, class:"sr-only", id:"file-upload"  %>
+                              </div>
+                          </div>
+                      </label>
+                      <p class="pl-1 text-white">or drag and drop</p>
+                    </div>
+                    <p class="text-xs text-white">
+                      PNG, JPG, GIF up to 10MB
+                    </p>
+                </div>
+
+              </div>
+            </div>
+
+            <div>
+                <label class="text-white dark:text-gray-200" for="username">Логин</label>
+                <%= f.text_field :login, required: true, autofocus: true, input_html: { autocomplete: "login" }, class:"block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"%>
+            </div>
+
+            <div>
+                <label class="text-white dark:text-gray-200" for="emailAddress">Почта</label>
+                <%= f.email_field :email, autofocus: true, autocomplete: "email", class:"block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" %>
+                  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+                    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+                  <% end %>
+            </div>
+
+            <div>
+                <label class="text-white dark:text-gray-200" for="password">Пароль</label>
+                <%= f.password_field :password, autocomplete: "new-password", class:"block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" %>
+                <% if @minimum_password_length %>
+                  <em class="text-gray-200"><%= @minimum_password_length %> characters minimum</em>
+                <% end %>
+            </div>
+
+            <div>
+                <label class="text-white dark:text-gray-200" for="passwordConfirmation">Подтверждение пароля</label>
+                <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" %>
+            </div>
+            <div>
+                <label class="text-white dark:text-gray-200" for="passwordConfirmation">Текущий пароль</label>
+                <%= f.password_field :current_password, autocomplete: "current-password", class:"block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" %>
+            </div>
+            <div>
+                <label class="text-white dark:text-gray-200" for="passwordConfirmation">Город</label>
+                <%= f.select(:city, %i[Москва Санкт-Петербург Новосибирск Екатеринбург Казань Нижний Новгород Челябинск Самара Уфа Ростов-на-Дону Брянск Омск Красноярск Воронеж Пермь Волгоград Краснодар Тюмень Саратов Тольятти Ижевск Барнаул Ульяновск Иркутск Хабаровск Махачкала Владивосток Ярославль Оренбург Томск Кемерово Новокузнецк Рязань Набережные Челны Киров Севастополь Астрахань Балашиха Пенза Калининград Чебоксары Липецк Тула Ставрополь Курск Улан-Удэ Сочи Тверь Магнитогорск Иваново], {}, { :class => "block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring" })%>
+            </div>
+            <div class="col-span-2">
+                <label class="text-white dark:text-gray-200" for="passwordConfirmation">О себе</label>
+                <%= f.text_area :desc, required: true, autofocus: true, input_html: { autocomplete: "desc" }, class:"block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"%>
+            </div>
+
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <%= f.submit "Update", class:"px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600" %>
+        </div>
+    <% end %>
+
+</section>
+</div>
+

@@ -1,0 +1,116 @@
+  <%# <%= link_to "Back to events", events_path %>
+
+<style>
+  .mainevent {
+    overflow-y:scroll;
+  }
+  .mainevent::-webkit-scrollbar {
+    width:0;
+  }
+</style>
+
+<div class="mainevent max-w-screen-xl h-full mx-auto" style="height:93vh">
+  <main class="mt-5">
+
+      <div class="mb-4 md:mb-0 w-full  mx-auto relative" style="height: 24em; ">
+        <div class="absolute left-0 bottom-0 w-full h-full z-10"
+          style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"></div>
+        <img src="<%= url_for(@event.header )%>" class="absolute left-0 top-0 w-full h-full z-0 object-full" />
+        <div class="p-4 absolute bottom-0 left-0 z-20">
+          <div class="flex gap-4">
+            <a href="/news/category/<%= Edition.where(id:@event.edition_id)[0].name %>"
+              class="py-1 bg-gray-500 text-gray-200 items-center justify-center ps-2 pe-2 text-center"><%= Edition.where(id:@event.edition_id)[0].name %></a>
+            <a href="/news/category/<%= @event.category %>"
+              class="py-1 bg-gray-800 text-gray-200 items-center justify-center ps-2 pe-2 text-center"><%= @event.category %></a>
+            <a href="/news/city/<%=@event.city %>" class="py-1  bg-black text-gray-200  items-center justify-center flex ps-2 pe-2">
+              <svg viewBox="0 0 24 24" class="mr-1" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <p class="ps-2"><%= @event.city %></p>
+            </a>
+          </div>
+
+          <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
+            <%= @event.title %>
+          </h2>
+          <div class="text-sm leading-normal text-gray-400 flex justify-center items-center">
+
+          </div>
+          <div class="flex mt-3">
+            <img src="<%= url_for(@event.user.avatar) %>"
+              class="h-10 w-10 rounded-full mr-2 object-cover" />
+            <div>
+              <p class="font-semibold text-gray-200 text-sm"> <%= @event.user.login%> </p>
+              <p class="font-semibold text-gray-400 text-xs"> <%=  l(@event.created_at, format: :short)%> </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-4 lg:px-0 mt-12 text-gray-700  mx-auto text-lg leading-relaxed">
+        <p class="pb-6"><%= @event.content %></p>
+
+        <%# <div class="border-l-4 border-gray-500 pl-4 mb-6 italic rounded">
+          Sportsman do offending supported extremity breakfast by listening. Decisively advantages nor
+          expression
+          unpleasing she led met. Estate was tended ten boy nearer seemed. As so seeing latter he should thirty whence.
+          Steepest speaking up attended it as. Made neat an on be gave show snug tore.
+        </div>
+
+        <h2 class="text-2xl text-gray-800 font-semibold mb-4 mt-4">Uneasy barton seeing remark happen his has</h2> %>
+
+
+      </div>
+
+        <h3 class="text-4xl pb-2">Комментарии</h3>
+        <div class="mb-7">
+          <%= form_with(model: [@event, EventComment.new], url: create_comment_event_path(@event)) do |form| %>
+            <%= form.text_area :content, placeholder: 'Add a comment...', rows: 4, class:"w-full border-2 border-gray-300 p-2 rounded-lg" %>
+            <%= form.submit 'Post Comment', class:"p-2 border-2 border-gray-300" %>
+          <% end %>
+        </div>
+       <% @event.event_comments.reverse.each do |comment| %>
+          <div class=" w-full relative top-1/3">
+            <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
+                <div class="relative flex gap-4">
+                    <img src="<%= url_for(comment.user.avatar)  %>" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
+                    <div class="flex flex-col w-full">
+                        <div class="flex flex-row justify-between">
+                            <p class="relative text-xl whitespace-nowrap truncate overflow-hidden"><%= comment.user.login %></p>
+                            <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                        <p class="text-gray-400 text-sm"><%= comment.content %></p>
+                    </div>
+                </div>
+                <p class="-mt-4 text-gray-500"><%=  l(comment.created_at, format: :short) %></p>
+            </div>
+          </div>
+        <% end %>
+        <div data-controller="alike" class="flex flex-end">
+
+    </div>
+  </main>
+
+
+</div>
+<div class="max-w-screen-xl  mx-auto flex">
+  <% if current_user.login == @event.user.login %>
+    <div class="flex-1 flex mt-2">
+      <span><%= link_to "Изменить", edit_event_path(@event), class:"ps-2 p-1 mt-1 text-emerald-400 border-2 border-emerald-400 " %></span>
+      <p><%= link_to "Удалить новость", event_path(@event), method: :delete, class:"ps-2 p-1 mt-1 ms-2 text-rose-400 border-2 border-rose-400 " %></p>
+    </div>
+  <% end %>
+  <div class="flex mt-1 me-2">
+    <% if @likes.nil? %>
+      <%= button_to image_tag("like.svg"), likes_path(likeable_type: 'Event', likeable_id: @event.id), method: :post, class:"pb-1 h-8 w-8" %>
+    <% else %>
+      <%= button_to image_tag("like_1.svg"), like_path(likeable_type: 'Event', likeable_id: @event.id), method: :delete, class:"pb-1 h-8 w-8"  %>
+    <% end %>
+
+    <% if @bookmarks.nil? %>
+      <%= button_to image_tag("bookmarks.svg"), bookmarks_path(bookmarkable_type: 'Event', bookmarkable_id: @event.id), method: :post, class:"h-8 w-8" %>
+    <% else %>
+      <%= button_to image_tag("bookmarks_1.svg"), bookmark_path(bookmarkable_type: 'Event', bookmarkable_id: @event.id), method: :delete, class:"h-8 w-8" %>
+    <% end %>
+  </div>
+  <span class="text-gray-400 mt-1 p-1 border-2 border-gray-300">Просмотры: <%= @event.impressionist_count %></span>
+
+</div>

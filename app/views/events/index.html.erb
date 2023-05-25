@@ -1,0 +1,186 @@
+<style>
+    .mainevent{
+        overflow-y:scroll;
+    }
+    .mainevent::-webkit-scrollbar {
+        width:0;
+    }
+</style>
+<div class="mainevent mx-auto max-w-screen-xl h-full">
+	<div
+		class="space-y-3 border-gray-900  z-10 rounded">
+        <div data-controller="search" class="w-full  p-5 ps-6 space-y-3 z-0">
+            <%# <h1>Создать новость! <a href="/news/new" class="text-blue-300">Создать</a></h1> %>
+            <div class="grid grid-cols-1 md:flex lg:flex  items-center p-2  bg-white rounded-xl shadow-lg hover:shadow-xl  transition duration-500">
+                <div  class="flex-1 flex bg-gray-100 p-2 me-2 space-x-4 rounded-t-lg md:rounded-lg  ">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8  md:mt-0 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <input data-search-target="find" class="bg-gray-100 outline-none w-full" type="text" placeholder="Введите заголовок новости..." />
+                </div>
+
+                <button data-action="click->search#find" class="bg-red-600 py-4 px-4  text-white font-semibold rounded-b-lg md:rounded-lg hover:shadow-lg transition duration-3000 cursor-pointer">
+                    <span>Поиск</span>
+                </button>
+            </div>
+        <!-- ,,,,,,,,-->
+			<h4 class="text-3xl pt-4 font-bold">Категории</h4>
+			<div class="grid grid-cols-2 lg:grid-cols-5 md:grid-cols-5  gap-3 text-gray-500 cursor-pointer ">
+                <% if !current_user.city.nil? %>
+                <a href="/news/city/<%= current_user.city %>"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/skyscraper.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold"><%= current_user.city %></p>
+				</a>
+                <% end %>
+				<a href="/news/category/Политика"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/speech.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold">Политика</p>
+				</a>
+				<a href="/news/category/Наука_и_здоровье"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/chemistry.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1  font-bold">Наука и здоровье</p>
+				</a>
+				<a href="/news/category/Экономика"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/economic.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold">Экономика</p>
+				</a>
+				<a href="/news/category/Технологии"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/laptop.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold">Технологии</p>
+				</a>
+                <a href="/news/category/Мировые_новости"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/news.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-center text-sm mt-1 font-bold">Мировые новости</p>
+				</a>
+                <a href="/news/category/Культура_и_искусство"
+					class="flex flex-col items-center w-full ps-2 pe-2  h-18  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/art.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-center text-sm mt-1 font-bold">Культура и искусство</p>
+				</a>
+                <a href="/news/category/Спорт"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/sports.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold">Спорт</p>
+				</a>
+                <a href="/news/category/Развлечения"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/popcorn.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold">Развлечения</p>
+				</a>
+                <a href="/news/category/Образование"
+					class="flex flex-col items-center w-full h-full justify-items-center ps-2 pe-2  border border-indigo-50  rounded-2xl hover:text-indigo-500 cursor-pointer py-2 bg-white">
+                    <%= image_tag "category/education.png", class:"h-8 w-8" %>
+					<p class="text-gray-600 text-sm mt-1 font-bold">Образование</p>
+				</a>
+			</div>
+
+            <div class="mb-3">
+    			<h4 class="text-3xl pt-4 font-bold pb-4">Функционал</h4>
+                <div class="md:flex sn:w-full md:gap-2">
+                    <% if !@user_edition.empty? %>
+                        <a href="/events/new" class="text-xl text-center sn:w-full md:w-1/2 border-2 border-emerald-500 p-2 font-bold text-emerald-500 shadow mb-2 rounded-lg">
+                            Написать статью
+                        </a>
+                    <% end %>
+
+
+                    <%# <button class="text-xl border-2 border-blue-500 p-2 font-bold text-blue-500 shadow mb-2 rounded-lg ">
+                        Перейти в поиск
+                    </button> %>
+                    <button class="text-xl sn:w-full md:w-1/2 border-2 border-yellow-500 p-2 font-bold text-yellow-500 shadow mb-2 rounded-lg ">
+                        Перейти в избранное
+                    </button>
+                </div>
+            </div>
+        </div>
+
+<!-- component -->
+
+        <div class=" h-full w-full px-5 pb-20 overflow-y-auto">
+            <div class="mb-3">
+                <h1 class="text-3xl font-bold">Сегодня</h1>
+                <p class="text-sm text-gray-500 uppercase font-bold"><%= l(Date.today, format: :short)%></p>
+            </div>
+
+
+
+            <% @popular_news[0..1].each do |news| %>
+            <div class="mb-5">
+                <a href="/news/<%= news.id %>" class="block rounded-lg relative p-5 transform transition-all duration-300 scale-100 hover:scale-95"
+                style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.6) 75.39%), url(<%= url_for(news.header) %>); background-position:center; background-size:100%;">
+                    <div class="absolute top-0 right-0 -mt-3 mr-3">
+                        <div class="rounded-full bg-indigo-500 text-white text-xs py-1 pl-2 pr-3 leading-none"><i class="mdi mdi-fire text-base align-middle"></i> <span class="align-middle">FRESH</span></div>
+                    </div>
+                    <div class="h-48"></div>
+                    <h2 class="text-white text-2xl font-bold leading-tight mb-3 pr-5"><%= news.title %></h2>
+                    <div class="flex w-full items-center text-sm text-gray-300 font-medium">
+                        <div class="flex-1 flex items-center">
+                            <div class="rounded-full w-8 h-8 mr-3" style="background: url(<%= url_for(news.user.avatar.variant(resize_to_fill:[1000,1000]))%>) center; background-size: cover;"></div>
+                            <div><%= news.user.login %></div>
+                        </div>
+                        <div><i class="mdi mdi-thumb-up"></i> <%= news.impressionist_count %></div>
+                    </div>
+                </a>
+            </div>
+            <% end %>
+
+
+            <% if @all_events[0...4].empty?%>
+                <div class="mb-3">
+                    <h1 class="text-3xl font-bold">Вчера</h1>
+                    <p class="text-sm text-gray-500 uppercase font-bold"><%= l(Date.yesterday, format: :short)%></p>
+                </div>
+                <div class="flex -mx-1 mb-5">
+                    <div class="w-1/2 px-1">
+                        <a href="/news/<%= @all_events[0].id %>" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.6) 75.39%), url(<%= url_for(@all_events[0].header) %>); background-position:center; background-size:cover;">
+                            <div class="h-24"></div>
+                            <h3 class="text-lg font-bold text-white leading-tight"><%= @all_events[0].title %></h3>
+                        </a>
+                        <a href="/news/<%= @all_events[1].id %>" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.6) 75.39%), url(<%= url_for(@all_events[1].header) %>); background-position:center; background-size:cover;">
+                            <div class="h-32"></div>
+                            <h3 class="text-lg font-bold text-white leading-tight"><%= @all_events[1].title %></h3>
+                        </a>
+                    </div>
+                    <div class="w-1/2 px-1">
+                        <a href="/news/<%= @all_events[2].id %>" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.6) 75.39%), url(<%= url_for(@all_events[2].header) %>); background-position:center; background-size:cover;">
+                            <div class="h-32"></div>
+                            <h3 class="text-lg font-bold text-white leading-tight"><%= @all_events[2].title %></h3>
+                        </a>
+                        <a href="/news/<%= @all_events[3].id %>" class="block mb-2 p-5 rounded overflow-hidden transform transition-all duration-300 scale-100 hover:scale-95" style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.6) 75.39%), url(<%= url_for(@all_events[3].header) %>); background-position:center; background-size:cover;">
+                            <div class="h-24"></div>
+                            <h3 class="text-lg font-bold text-white leading-tight"><%= @all_events[3].title %></h3>
+                        </a>
+                    </div>
+                </div>
+            <% end %>
+
+            <div class="mb-3">
+                <h1 class="text-3xl font-bold">Все новости</h1>
+            </div>
+            <div>
+                <% @all_events.each do |u|%>
+                <a href="/news/<%= u.id %>" class="mt-2 flex w-full transform transition-all duration-300 scale-100 hover:scale-95">
+                    <div class="block h-24 w-2/5 rounded overflow-hidden" style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.6) 75.39%), url(<%= url_for(u.header) %>); background-position:center; background-size:cover;"></div>
+                    <div class="pl-3 w-3/5">
+                        <p class="text-xs text-gray-500 uppercase font-semibold"><%= u.title %></p>
+                        <h3 class="text-md font-semibold leading-tight mb-3"><%= u.content.to_s[0,150] %></h3>
+                        <div class="flex w-full items-center text-xs text-gray-500 font-medium">
+                            <div class="rounded-full w-5 h-5 mr-3" style="background: url(<%= url_for(u.user.avatar.variant(resize_to_fill:[1000,1000])) %>) center; background-size: cover;"></div>
+                            <div><%= u.user.login %></div>
+                        </div>
+                    </div>
+                </a>
+            <hr class="border-gray-200 my-3">
+
+                <% end %>
+            </div>
+
+        </div>
+
+</div>

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  bookmarkable: one
+  bookmarkable_type: Bookmarkable
+
+two:
+  user: two
+  bookmarkable: two
+  bookmarkable_type: Bookmarkable

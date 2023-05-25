@@ -1,0 +1,63 @@
+<% current_user.bookmarks.each do |bookmark| %>
+
+    <div class="post_block mb-5 bg-white rounded-lg p-2">
+        <div class="flex flex-row">
+            <a href="/users/<%= bookmark.bookmarkable.user.id %>" class="w-auto h-auto rounded-full">
+                <img class="w-12 h-12 object-cover rounded-full shadow cursor-pointer" alt="User avatar" src="<%= url_for(bookmark.bookmarkable.user.avatar) %>">
+            </a>
+            <div class="flex flex-col mb-2 ml-4 mt-1">
+                <div class="text-gray-600 text-sm font-semibold"><%= bookmark.bookmarkable.user.login %></div>
+
+                <div class="flex w-full mt-1">
+                    <div class="text-blue-700 font-base text-xs mr-1 cursor-pointer">
+                        <%= bookmark.bookmarkable.user.user_role.name %>
+                    </div>
+                    <div class="text-gray-400 font-thin text-xs">
+                        • <%= l(Time.now, format: :short) %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="border-b border-gray-100"></div>
+        <div>
+            <div class="py-2 flex">
+                <%= button_to image_tag("bookmarks_1.svg"), bookmark_path(bookmarkable_type: 'Article', bookmarkable_id:bookmark.bookmarkable.id), method: :delete, class:"h-8 w-8" %>
+                <% if bookmark.bookmarkable_type == 'Article' %>
+                    <span class="flex"><%= link_to bookmark.bookmarkable.title,article_path(bookmark.bookmarkable), class:"text-gray-700 text-xl py-2" %></span>
+                <% elsif bookmark.bookmarkable_type == 'Event' %>
+                    <span class="flex"><%= link_to bookmark.bookmarkable.title, event_path(bookmark.bookmarkable), class:"text-gray-700 text-xl py-2" %></span>
+                <% end %>
+
+            </div>
+            <div class=" overflow-hidden rounded-xl col-span-3 max-h-[14rem]">
+                <img class="h-full w-full object-cover " src="<%= url_for(bookmark.bookmarkable.header) %>" alt=""/>
+            </div>
+            <h1 class="pt-2 px-1"><%= bookmark.bookmarkable.content.to_s[0...150] %>..</h1>
+            <% if bookmark.bookmarkable_type == 'Event' %>
+                <span><%= link_to "Читать дальше", event_path(bookmark.bookmarkable), class:"text-blue-300" %></span>
+            <% else %>
+                <span><%= link_to "Читать дальше", article_path(bookmark.bookmarkable), class:"text-blue-300" %></span>
+            <% end %>
+        </div>
+        <div class="flex w-full fw-bold border-t mt-5 border-gray-100">
+            <div class="mt-1  flex gap-5 flex-row text-xs">
+                <%if bookmark.bookmarkable_type == 'Event' %>
+                    <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-xl"> <%= bookmark.bookmarkable.event_comments.count %></span></p>
+                <% else %>
+                    <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-ms"> <%= bookmark.bookmarkable.articles_comments.count %></span></p>
+                <% end %>
+                <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Просмотров: <span class="ml-1 text-gray-400 text-ms"> <%= bookmark.bookmarkable.impressionist_count %></span></p>
+            </div>
+            <div class="mt-1 mx-5 w-full flex justify-end text-xs">
+                <p class="flex text-gray-700  rounded-md mb-2 mr-4 items-center">Лайков: <span class="ml-1 text-gray-400  text-ms">
+                    <% if bookmark.bookmarkable_type == 'Event' %>
+                        <%= likes_e(bookmark.bookmarkable.id) %></span>
+                    <% else %>
+                        <%= likes_a(bookmark.bookmarkable.id) %></span>
+                    <% end %>
+                </p>
+            </div>
+        </div>
+    </div>
+<% end %>
+

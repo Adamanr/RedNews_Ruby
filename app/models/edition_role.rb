@@ -1,0 +1,2 @@
+class EditionRole < ApplicationRecord
+end

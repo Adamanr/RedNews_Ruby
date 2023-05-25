@@ -1,0 +1,18 @@
+<style>
+  .profile-page::-webkit-scrollbar {
+    width:0;
+  }
+</style>
+<main class="shadow max-w-7xl mx-auto  profile-page overflow-y-scroll h-full">
+    <div class="m-2 border-2 w-1/3 border-gray-500">
+        <ul class="p-2 ">
+            <h1 class="text-4xl">Участники</h1><hr class="border-[0.2em] border-gray-600">
+
+            <% @users_list.each do |u| %>
+                <li class="pt-3 text-1xl">
+                    <%= u.user.login %> [<%= EditionRole.find(u.role_id).name %>]
+                <li>
+            <% end %>
+        </ul>
+    </div>
+</main>

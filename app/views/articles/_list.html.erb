@@ -1,0 +1,7 @@
+<% articles.each do |article| %>
+  <div>
+    <h2><%= article.title %></h2>
+    <p>Author: <%= article.user_id %></p>
+    <p><%= article.body %></p>
+  </div>
+<% end %>

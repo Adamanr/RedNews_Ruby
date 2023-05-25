@@ -1,0 +1,600 @@
+<!-- component -->
+<div x-data="setup()" x-init="$refs.loading.classList.add('hidden');" @resize.window="watchScreen()">
+      <div class="flex h-screen antialiased text-gray-900 bg-gray-100 dark:bg-dark dark:text-light">
+        <!-- Loading screen -->
+        <div
+          x-ref="loading"
+          class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-indigo-800"
+        >
+          Loading.....
+        </div>
+
+        <!-- Sidebar -->
+        <div class="flex flex-shrink-0 transition-all">
+          <div
+            x-show="isSidebarOpen"
+            @click="isSidebarOpen = false"
+            class="fixed inset-0 z-10 bg-black bg-opacity-50 lg:hidden"
+          ></div>
+          <div x-show="isSidebarOpen" class="fixed inset-y-0 z-10 w-16 bg-white"></div>
+
+          <!-- Mobile bottom bar -->
+          <nav
+            aria-label="Options"
+            class="fixed inset-x-0 bottom-0 z-10  flex flex-row-reverse items-center justify-between px-4 py-2 bg-white border-t border-indigo-100 sm:hidden shadow-t rounded-t-3xl"
+          >
+            <!-- Menu button -->
+            <button
+              @click="(isSidebarOpen && currentSidebarTab == 'linksTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'linksTab'"
+              class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+              :class="(isSidebarOpen && currentSidebarTab == 'linksTab') ? 'text-white bg-indigo-600' : 'text-gray-500 bg-white'"
+            >
+              <span class="sr-only">Toggle sidebar</span>
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+              </svg>
+            </button>
+
+            <!-- Logo -->
+            <a href="#">
+              <%= image_tag "rednews_logo.svg", class:"w-10 h-auto"%>
+            </a>
+
+            <!-- User avatar button -->
+            <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
+              <button
+                @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
+                class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+              >
+                <img
+                  class="w-8 h-8 rounded-lg shadow-md"
+                  src="<%= url_for(current_user.avatar) %>"
+                  alt="Ahmed Kamel"
+                />
+                <span class="sr-only">User menu</span>
+              </button>
+              <div
+                x-show="isOpen"
+                @click.away="isOpen = false"
+                @keydown.escape="isOpen = false"
+                x-ref="userMenu"
+                tabindex="-1"
+                class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-label="user menu"
+              >
+              <% if user_signed_in? %>
+                   <a href="/users/<%= current_user.id %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                  >Your Profile</a
+                >
+
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
+                <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100", role:"menuitem" %>
+              <% else%>
+                <a href="/users/sign_in" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign in</a>
+                <a href="/users/sign_up" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign up</a>
+
+              <% end%>
+
+              </div>
+            </div>
+          </nav>
+
+          <!-- Left mini bar -->
+          <nav
+            aria-label="Options"
+            class="z-20 flex-col items-center flex-shrink-0 hidden w-16 py-4 bg-white border-r-2 border-indigo-100 shadow-md sm:flex rounded-tr-3xl rounded-br-3xl"
+          >
+            <!-- Logo -->
+            <div class="flex-shrink-0 py-4">
+              <a href="#">
+                <%= image_tag "rednews_logo.svg", class:"w-10 h-auto"%>
+              </a>
+            </div>
+            <div class="flex flex-col items-center flex-1 p-2 space-y-4">
+              <!-- Menu button -->
+              <button
+                @click="(isSidebarOpen && currentSidebarTab == 'linksTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'linksTab'"
+                class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+                :class="(isSidebarOpen && currentSidebarTab == 'linksTab') ? 'text-white bg-indigo-600' : 'text-gray-500 bg-white'"
+              >
+                <span class="sr-only">Toggle sidebar</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                </svg>
+              </button>
+              <!-- Messages button -->
+              <button
+                @click="(isSidebarOpen && currentSidebarTab == 'messagesTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'messagesTab'"
+                class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+                :class="(isSidebarOpen && currentSidebarTab == 'messagesTab') ? 'text-white bg-indigo-600' : 'text-gray-500 bg-white'"
+              >
+                <span class="sr-only">Toggle message panel</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                  />
+                </svg>
+              </button>
+              <!-- Notifications button -->
+              <button
+                @click="(isSidebarOpen && currentSidebarTab == 'notificationsTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'notificationsTab'"
+                class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+                :class="(isSidebarOpen && currentSidebarTab == 'notificationsTab') ? 'text-white bg-indigo-600' : 'text-gray-500 bg-white'"
+              >
+                <span class="sr-only">Toggle notifications panel</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <!-- User avatar -->
+            <div class="relative flex items-center flex-shrink-0 p-2" x-data="{ isOpen: false }">
+              <button
+                @click="isOpen = !isOpen; $nextTick(() => {isOpen ? $refs.userMenu.focus() : null})"
+                class="transition-opacity rounded-lg opacity-80 hover:opacity-100 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
+              >
+                <img
+                  class="w-10 h-10 rounded-full shadow-md"
+                  src="<%= url_for(current_user.avatar) %>"
+                  alt="Ahmed Kamel"
+                />
+                <span class="sr-only">User menu</span>
+              </button>
+              <div
+                x-show="isOpen"
+                @click.away="isOpen = false"
+                @keydown.escape="isOpen = false"
+                x-ref="userMenu"
+                tabindex="-1"
+                class="absolute w-48 py-1 mt-2 origin-bottom-left bg-white rounded-md shadow-lg left-10 bottom-14 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-label="user menu"
+              >
+                   <% if user_signed_in? %>
+                   <a href="/users/<%= current_user.id %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
+                  >Your Profile</a
+                >
+
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
+                <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100", role:"menuitem" %>
+              <% else%>
+                <a href="/users/sign_in" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign in</a>
+                <a href="/users/sign_up" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign up</a>
+
+              <% end%>
+              </div>
+            </div>
+          </nav>
+
+          <div
+            x-transition:enter="transform transition-transform duration-300"
+            x-transition:enter-start="-translate-x-full"
+            x-transition:enter-end="translate-x-0"
+            x-transition:leave="transform transition-transform duration-300"
+            x-transition:leave-start="translate-x-0"
+            x-transition:leave-end="-translate-x-full"
+            x-show="isSidebarOpen"
+            class="fixed inset-y-0 left-0 z-10 flex-shrink-0 w-64 bg-white border-r-2 border-indigo-100 shadow-lg sm:left-16 rounded-tr-3xl rounded-br-3xl sm:w-72 lg:static lg:w-64"
+          >
+            <nav x-show="currentSidebarTab == 'linksTab'" aria-label="Main" class="flex flex-col h-full">
+              <!-- Logo -->
+              <div class="flex items-center justify-center flex-shrink-0 py-10">
+                <a href="#">
+                  <!-- <svg
+                    class="text-indigo-600"
+                    width="96"
+                    height="53"
+                    fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                      d="M7.691 34.703L13.95 28.2 32.09 52h8.087L18.449 23.418 38.594.813h-8.157L7.692 26.125V.812H.941V52h6.75V34.703zm27.61-7.793h17.156v-5.308H35.301v5.308zM89.19 13v22.512c0 3.703-1.02 6.574-3.058 8.613-2.016 2.04-4.934 3.059-8.754 3.059-3.773 0-6.68-1.02-8.719-3.059-2.039-2.063-3.058-4.945-3.058-8.648V.813h-6.68v34.874c.047 5.297 1.734 9.458 5.062 12.481 3.328 3.023 7.793 4.535 13.395 4.535l1.793-.07c5.156-.375 9.234-2.098 12.234-5.168 3.024-3.07 4.547-7.02 4.57-11.848V13h-6.785zM89 8h7V1h-7v7z"
+                    />
+                  </svg> -->
+                  <%= image_tag "rednews_logo.svg", class:"w-24 h-auto"%>
+                </a>
+              </div>
+
+              <!-- Links -->
+              <div class="flex-1 px-4 space-y-2 overflow-hidden hover:overflow-auto">
+                <% if current_page?("/")%>
+                  <a href="/" class="flex items-center space-x-2 transition-colors rounded-lg group bg-indigo-600 text-white">
+                    <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <% else %>
+                  <a href="/" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                    <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                <% end %>
+                    <svg class="w-7 h-7" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                    </svg>
+                  </span>
+                  <span>Главная</span>
+                </a>
+
+                <% if current_page?("/news")%>
+                <a href="/news" class="flex items-center space-x-2 transition-colors rounded-lg group bg-indigo-600 text-white">
+                  <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <% else %>
+                <a href="/news" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                  <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                <% end %>
+                  <svg class="w-7 h-7" stroke-width="2" version="1.1" fill="none" stroke="currentColor" viewBox="0 0 32 32" enable-background="new 0 0 32 32" id="Stock_cut" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <desc/><g><path d="M27,5V3H1v26   c0,1.105,0.895,2,2,2h26c1.105,0,2-0.895,2-2V5H27z" fill="none" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2"/><rect fill="none" height="8" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" width="10" x="5" y="19"/><line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="27" x2="27" y1="5" y2="24"/>
+                    <line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="27" x2="27" y1="26" y2="28"/><line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="4" x2="24" y1="11" y2="11"/>
+                    <line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="4" x2="24" y1="7" y2="7"/><line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="4" x2="24" y1="15" y2="15"/>
+                    <line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="18" x2="24" y1="19" y2="19"/><line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="18" x2="24" y1="23" y2="23"/><line fill="none"  stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" x1="18" x2="24" y1="27" y2="27"/></g>
+                  </svg>
+                  </span>
+                  <span>Новости</span>
+                </a>
+
+                <% if current_page?("/articles")%>
+                  <a href="/articles" class="flex items-center space-x-2 text-white transition-colors rounded-lg group bg-indigo-600">
+                    <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <% else %>
+                  <a href="/articles" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                    <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                <% end %>
+                    <svg class="w-7 h-7" stroke-width="2" version="1.1" fill="none" stroke="currentColor" viewBox="0 0 64 64" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                      <g id="Grid"/><g id="Proyektor"/><g id="Laptop"/><g id="Papan"/><g id="Kursi"/><g id="Meja"/><g id="Book"/><g id="News"><g><g><g><path class="st0" d="M60,58H4c-1.1,0-2-0.9-2-2V8c0-1.1,0.9-2,2-2h56c1.1,0,2,0.9,2,2v48C62,57.1,61.1,58,60,58z M4,56h56V8H4      V56z"/></g></g><g><g><path class="st0" d="M32,30H11c-0.6,0-1-0.4-1-1V13c0-0.6,0.4-1,1-1h21c0.6,0,1,0.4,1,1v16C33,29.6,32.6,30,32,30z M12,28h19      V14.1H12V28z"/></g></g><g><path class="st0" d="M54,39H10c-0.6,0-1-0.4-1-1s0.4-1,1-1h44c0.6,0,1,0.4,1,1S54.6,39,54,39z"/></g><g><path class="st0" d="M54,44H10c-0.6,0-1-0.4-1-1s0.4-1,1-1h44c0.6,0,1,0.4,1,1S54.6,44,54,44z"/></g><g><path class="st0" d="M54,49H10c-0.6,0-1-0.4-1-1s0.4-1,1-1h44c0.6,0,1,0.4,1,1S54.6,49,54,49z"/></g><g><polygon class="st0" points="20.7,26 16.6,21 11.7,25.7 10.3,24.3 16.7,18 20.8,23 26.9,15.9 32.8,23.9 31.2,25.1 26.8,19.1         "/></g></g></g><g id="Note"/><g id="Calculator"/><g id="Ruler"/><g id="Pencil"/><g id="Clock"/><g id="Document"/><g id="Galeri"/><g id="Storage_Pencil"/><g id="Tras_Can"/><g id="Stempel"/><g id="_x2E_.."/><g id="Clip"/><g id="Board"/>
+                    </svg>
+                  </span>
+                  <span>Статьи</span>
+                </a>
+
+                <% if current_page?("/users/" + current_user.id.to_s + "/lenta")%>
+                  <a href="/users/<%= current_user.id %>/lenta" class="flex items-center space-x-2 transition-colors rounded-lg group bg-indigo-600 text-white">
+                    <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <% else %>
+                  <a href="/users/<%= current_user.id %>/lenta" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                    <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                <% end %>
+                    <svg class="w-7 h-7" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" stroke="currentColor" fill="none">
+                      <g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>tape [#939]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke-width="1"fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-100.000000, -4039.000000)"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M56.998,3886.5 L57.998,3886.5 L57.998,3884.5 L56.998,3884.5 L56.998,3886.5 Z M52.998,3886.5 L54.998,3886.5 L54.998,3884.5 L52.998,3884.5 L52.998,3886.5 Z M49.998,3886.5 L50.998,3886.5 L50.998,3884.5 L49.998,3884.5 L49.998,3886.5 Z M48,3888 L60,3888 L60,3883 L48,3883 L48,3888 Z M62,3897 L59.331,3897 L57.998,3893 L49.998,3893 L48.664,3897 L46,3897 L46,3881 L62,3881 L62,3897 Z M50.664,3897 L51.331,3895 L56.664,3895 L57.331,3897 L50.664,3897 Z M44,3899 L64,3899 L64,3879 L44,3879 L44,3899 Z" id="tape-[#939]"> </path> </g> </g> </g> </g>
+                    </svg>
+                  </span>
+                  <span>Лента</span>
+                </a>
+
+                <% if current_page?("/all/users/")%>
+                  <a href="/all/users/" class="flex items-center space-x-2 transition-colors rounded-lg group bg-indigo-600 text-white">
+                    <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <% else %>
+                  <a href="/all/users/" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                    <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                <% end %>
+                  <svg class="w-7 h-7"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M19 14C21.2091 14 23 16 23 17.5C23 18.3284 22.3284 19 21.5 19H21M17 11C18.6569 11 20 9.65685 20 8C20 6.34315 18.6569 5 17 5M5 14C2.79086 14 1 16 1 17.5C1 18.3284 1.67157 19 2.5 19H3M7 11C5.34315 11 4 9.65685 4 8C4 6.34315 5.34315 5 7 5M16.5 19H7.5C6.67157 19 6 18.3284 6 17.5C6 15 9 14 12 14C15 14 18 15 18 17.5C18 18.3284 17.3284 19 16.5 19ZM15 8C15 9.65685 13.6569 11 12 11C10.3431 11 9 9.65685 9 8C9 6.34315 10.3431 5 12 5C13.6569 5 15 6.34315 15 8Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+                  </span>
+                  <span>Пользователи</span>
+                </a>
+
+                <% if current_page?("/editions")%>
+                  <a href="/editions" class="flex items-center space-x-2 transition-colors rounded-lg group bg-indigo-600 text-white">
+                    <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                <% else %>
+                  <a href="/editions" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                    <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                <% end %>
+                  <svg class="w-7 h-7" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css">  </style> <g> <path class="st0" d="M256.004,128.202c35.39,0,64.094-28.704,64.094-64.102S291.394,0,256.004,0 c-35.405,0-64.101,28.703-64.101,64.101S220.599,128.202,256.004,128.202z"></path> <path class="st0" d="M467.733,291.47v-92.646L399.6,213.288c-15.019-30.471-45.576-45.057-76.444-52.018l-63.733,81.775 l-3.39,0.722l-3.477-0.736l-63.726-81.761c-30.86,6.962-61.418,21.548-76.422,52.018l-68.155-14.464v92.646 c-17.702,2.316-31.38,17.435-31.38,35.787c0,18.344,13.678,33.457,31.38,35.78v104.079l205.259,43.499l6.521,1.385l6.514-1.385 l205.186-43.499V363.037c17.71-2.323,31.394-17.436,31.394-35.78C499.127,308.905,485.443,293.792,467.733,291.47z M249.511,497.32 L57.295,456.591v-94.196c6.521-1.537,12.371-4.826,17.003-9.356l64.483,13.676l1.342-6.37l-61.114-12.963 c1.709-2.525,3.058-5.302,4.09-8.238l55.682,11.816l1.342-6.362l-55.459-11.773c0.289-1.818,0.476-3.671,0.476-5.569 c0-1.169-0.058-2.33-0.174-3.47l53.814,11.419l1.342-6.37l-56.526-11.99c-3.686-12.284-13.735-21.77-26.301-24.736v-77.165 l192.216,40.722V497.32z M454.698,292.112c-12.466,2.929-22.449,12.278-26.228,24.404l-58.028,12.321l1.349,6.37l55.264-11.722 c-0.13,1.234-0.202,2.496-0.202,3.772c0,1.796,0.174,3.542,0.426,5.266l-56.837,12.076l1.349,6.362l57.01-12.09 c0.996,2.929,2.337,5.706,4.011,8.238l-62.37,13.237l1.349,6.37l65.486-13.886l-0.051-0.259c4.703,4.782,10.72,8.238,17.472,9.825 v94.196L262.547,497.32V255.668l192.151-40.722V292.112z"></path> <polygon class="st0" points="139.445,253.915 73.959,240.028 73.959,255.79 139.445,269.677 "></polygon> <polygon class="st0" points="140.123,282.25 74.622,268.357 73.281,274.727 138.781,288.621 "></polygon> <polygon class="st0" points="140.123,298.012 74.622,284.112 73.281,290.489 138.781,304.389 "></polygon> <polygon class="st0" points="100.332,367.66 74.622,362.2 73.281,368.57 98.991,374.024 "></polygon> <polygon class="st0" points="73.281,399.394 138.781,413.295 140.123,406.918 74.622,393.031 "></polygon> <polygon class="st0" points="112.66,416.858 74.622,408.786 73.281,415.156 111.311,423.228 "></polygon> <polygon class="st0" points="73.281,430.918 138.781,444.804 140.123,438.449 74.622,424.541 "></polygon> <polygon class="st0" points="73.281,446.666 138.781,460.559 140.123,454.189 74.622,440.296 "></polygon> <polygon class="st0" points="224.812,268.112 159.325,254.218 157.984,260.588 223.47,274.489 "></polygon> <polygon class="st0" points="224.812,283.874 159.325,269.987 157.984,276.357 223.47,290.236 "></polygon> <polygon class="st0" points="224.812,299.621 159.325,285.734 157.984,292.098 223.47,305.998 "></polygon> <polygon class="st0" points="224.812,315.39 159.325,301.482 157.984,307.859 223.47,321.76 "></polygon> <path class="st0" d="M158.647,367.012l65.5,13.893v-31.517l-65.5-13.893V367.012z M165.169,343.531l52.458,11.138v18.192 l-52.458-11.13V343.531z"></path> <polygon class="st0" points="224.812,393.479 159.325,379.578 157.984,385.955 223.47,399.849 "></polygon> <polygon class="st0" points="224.812,424.289 159.325,410.402 157.984,416.779 223.47,430.665 "></polygon> <polygon class="st0" points="224.812,440.051 159.325,426.157 157.984,432.526 223.47,446.427 "></polygon> <polygon class="st0" points="224.812,455.82 159.325,441.919 157.984,448.288 223.47,462.175 "></polygon> <polygon class="st0" points="200.689,466.453 159.325,457.666 157.984,464.036 199.347,472.822 "></polygon> <rect x="400.604" y="213.507" transform="matrix(0.2073 0.9783 -0.9783 0.2073 561.7686 -199.301)" class="st0" width="6.511" height="66.944"></rect> <polygon class="st0" points="437.277,258.986 435.928,252.61 370.442,266.503 371.791,272.865 "></polygon> <rect x="400.604" y="245.017" transform="matrix(0.2073 0.9783 -0.9783 0.2073 592.588 -174.3249)" class="st0" width="6.511" height="66.944"></rect> <polygon class="st0" points="437.277,290.489 435.928,284.112 370.442,298.012 371.791,304.389 "></polygon> <polygon class="st0" points="411.581,374.024 410.233,367.66 370.442,376.108 371.791,382.478 "></polygon> <polygon class="st0" points="437.277,399.394 435.928,393.031 370.442,406.918 371.791,413.295 "></polygon> <rect x="400.604" y="385.446" transform="matrix(0.2073 0.9783 -0.9783 0.2073 729.9673 -63.0038)" class="st0" width="6.511" height="66.944"></rect> <polygon class="st0" points="417.41,435.13 416.061,428.768 370.442,438.449 371.791,444.804 "></polygon> <rect x="400.604" y="416.956" transform="matrix(0.2073 0.9783 -0.9783 0.2073 760.7925 -38.0255)" class="st0" width="6.511" height="66.944"></rect> <polygon class="st0" points="352.595,260.588 351.239,254.218 285.739,268.112 287.095,274.489 "></polygon> <polygon class="st0" points="352.595,276.357 351.239,269.987 285.739,283.874 287.095,290.236 "></polygon> <polygon class="st0" points="352.595,292.098 351.239,285.734 285.739,299.621 287.095,305.998 "></polygon> <polygon class="st0" points="323.899,313.954 322.55,307.571 285.739,315.39 287.095,321.76 "></polygon> <polygon class="st0" points="286.424,365.15 351.91,351.264 351.91,335.495 286.424,349.388 "></polygon> <polygon class="st0" points="352.595,370.193 351.239,363.83 285.739,377.717 287.095,384.094 "></polygon> <polygon class="st0" points="326.885,391.394 325.544,385.031 285.739,393.479 287.095,399.849 "></polygon> <polygon class="st0" points="352.595,416.779 351.239,410.402 285.739,424.289 287.095,430.665 "></polygon> <polygon class="st0" points="352.595,432.526 351.239,426.157 285.739,440.051 287.095,446.427 "></polygon> <polygon class="st0" points="352.595,448.288 351.239,441.919 285.739,455.82 287.095,462.175 "></polygon> <polygon class="st0" points="306.788,473.767 305.432,467.39 285.739,471.56 287.095,477.944 "></polygon> <rect x="241.511" y="159.127" class="st0" width="28.963" height="14.478"></rect> <polygon class="st0" points="241.511,215.841 256.004,234.409 270.475,215.841 270.475,179.932 241.511,179.932 "></polygon> </g> </g></svg>
+                  </span>
+                  <span>Издания</span>
+                </a>
+                <% if current_user.verified %>
+                  <% if current_page?("/admin")%>
+                    <a href="/admin" class="flex items-center space-x-2 transition-colors rounded-lg group bg-indigo-600 text-white">
+                      <span aria-hidden="true" class="p-2 bg-indigo-700 rounded-lg">
+                  <% else %>
+                    <a href="/admin" class="flex items-center space-x-2 text-indigo-600 transition-colors rounded-lg group hover:bg-indigo-600 hover:text-white">
+                      <span aria-hidden="true" class="p-2 rounded-lg group-hover:bg-indigo-700">
+                  <% end %>
+                      <svg class="w-7 h-7" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" viewBox="0 0 30 30" version="1.1" id="svg822" inkscape:version="0.92.4 (f8dce91, 2019-08-02)" sodipodi:docname="admin.svg" fill="currentColor"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <defs id="defs816"></defs> <sodipodi:namedview id="base" pagecolor="currentColor" bordercolor="currentColor" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="12.610071" inkscape:cx="13.690863" inkscape:cy="14.709664" inkscape:document-units="px" inkscape:current-layer="layer1" showgrid="true" units="px" inkscape:window-width="1366" inkscape:window-height="713" inkscape:window-x="0" inkscape:window-y="0" inkscape:window-maximized="1" showguides="false" inkscape:snap-global="false"> <inkscape:grid type="xygrid" id="grid816"></inkscape:grid> </sodipodi:namedview> <metadata id="metadata819"> <rdf:rdf> <cc:work rdf:about=""> <dc:format>image/svg+xml</dc:format> <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type> <dc:title> </dc:title> </cc:work> </rdf:rdf> </metadata> <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1" transform="translate(0,-289.0625)"> <path style="opacity:0.91000001;fill-opacity:1;stroke:none;stroke-width:0.5;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" d="M 11.916016 6.28125 A 4 4 0 0 0 7.9160156 10.28125 A 4 4 0 0 0 11.916016 14.28125 A 4 4 0 0 0 15.916016 10.28125 A 4 4 0 0 0 11.916016 6.28125 z M 8.4628906 15.115234 C 5.2252742 16.489124 3.0845987 19.623082 2.9824219 23.138672 C 5.1722039 25.642012 8.3828992 27.230469 11.972656 27.230469 C 13.939081 27.230469 15.782366 26.738864 17.416016 25.896484 C 16.972529 25.303803 16.599939 24.654546 16.285156 23.957031 C 15.297133 21.767701 14.789426 19.133132 14.728516 16.570312 L 14.722656 16.318359 L 12.001953 20.574219 L 8.4628906 15.115234 z M 22.037109 15.308594 C 20.292352 15.308594 17.177734 17.251953 17.177734 17.251953 C 17.287817 21.883593 19.126557 27.009156 22.037109 26.972656 C 22.040309 26.972626 22.043675 26.972696 22.046875 26.972656 C 22.864919 26.962256 23.588979 26.535536 24.179688 25.916016 C 24.770398 25.296496 25.255835 24.472265 25.654297 23.546875 C 26.45122 21.696085 26.896484 19.437792 26.896484 17.576172 L 26.896484 17.308594 L 26.671875 17.166016 C 26.671875 17.166016 25.951124 16.70805 25.029297 16.25 C 24.107471 15.79195 23.009546 15.308594 22.041016 15.308594 L 22.037109 15.308594 z M 22.037109 16.279297 L 22.041016 16.279297 C 22.641611 16.279297 23.726421 16.688174 24.597656 17.121094 C 25.326193 17.483104 25.720925 17.73488 25.896484 17.84375 C 25.857384 19.50574 25.45849 21.539389 24.759766 23.162109 C 24.392753 24.014469 23.950753 24.748774 23.476562 25.246094 C 23.003258 25.742454 22.526857 25.9928 22.037109 26 L 22.037109 16.279297 z " transform="translate(0,289.0625)" id="path852"></path> </g> </g></svg>
+                    </span>
+                    <span>Панель администратора</span>
+                  </a>
+                <% end %>
+
+              </div>
+              <div class="flex-shrink-0 p-4 mt-10">
+                <div class="hidden p-2 space-y-6 bg-gray-100 rounded-lg md:block">
+                  <button
+                    class="w-full px-4 py-2 text-center text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100"
+                  >
+                    Оформить подписку
+                  </button>
+                </div>
+
+                <button
+                  class="w-full px-4 py-2 text-center text-white transition-colors bg-indigo-600 rounded-lg md:hidden hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100"
+                >
+                  Upgrade to pro
+                </button>
+              </div>
+            </nav>
+
+            <section x-show="currentSidebarTab == 'messagesTab'" class="px-4 py-6">
+              <h2 class="text-xl">Messages</h2>
+            </section>
+
+            <section x-show="currentSidebarTab == 'notificationsTab'" class="px-4 py-6">
+              <h2 class="text-xl">Notifications</h2>
+            </section>
+          </div>
+        </div>
+        <div class="w-full">
+            <div class="w-full p-0 md:p-5 lg:p-5" style="height:100vh;">
+                <%= yield %>
+            </div>
+          <%# <header class="relative flex items-center justify-between flex-shrink-0 p-4">
+            <div class="items-center hidden ml-4 sm:flex">
+              <button
+                @click="isSettingsPanelOpen = true"
+                class="p-2 mr-4 text-gray-400 bg-white rounded-lg shadow-md hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
+              >
+                <span class="sr-only">Settings</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </button>
+
+              <!-- Github link -->
+              <a
+                href="https://github.com/kamona-ui/dashboard-alpine"
+                target="_blank"
+                class="p-2 text-white bg-black rounded-lg shadow-md hover:text-gray-200 focus:outline-none focus:ring focus:ring-black focus:ring-offset-gray-100 focus:ring-offset-2"
+              >
+                <span class="sr-only">github link</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M12.026,2c-5.509,0-9.974,4.465-9.974,9.974c0,4.406,2.857,8.145,6.821,9.465 c0.499,0.09,0.679-0.217,0.679-0.481c0-0.237-0.008-0.865-0.011-1.696c-2.775,0.602-3.361-1.338-3.361-1.338 c-0.452-1.152-1.107-1.459-1.107-1.459c-0.905-0.619,0.069-0.605,0.069-0.605c1.002,0.07,1.527,1.028,1.527,1.028 c0.89,1.524,2.336,1.084,2.902,0.829c0.091-0.645,0.351-1.085,0.635-1.334c-2.214-0.251-4.542-1.107-4.542-4.93 c0-1.087,0.389-1.979,1.024-2.675c-0.101-0.253-0.446-1.268,0.099-2.64c0,0,0.837-0.269,2.742,1.021 c0.798-0.221,1.649-0.332,2.496-0.336c0.849,0.004,1.701,0.115,2.496,0.336c1.906-1.291,2.742-1.021,2.742-1.021 c0.545,1.372,0.203,2.387,0.099,2.64c0.64,0.696,1.024,1.587,1.024,2.675c0,3.833-2.33,4.675-4.552,4.922 c0.355,0.308,0.675,0.916,0.675,1.846c0,1.334-0.012,2.41-0.012,2.737c0,0.267,0.178,0.577,0.687,0.479 C19.146,20.115,22,16.379,22,11.974C22,6.465,17.535,2,12.026,2z"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+
+            <!-- Mobile sub header button -->
+            <button
+              @click="isSubHeaderOpen = !isSubHeaderOpen"
+              class="p-2 text-gray-400 bg-white rounded-lg shadow-md sm:hidden hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
+            >
+              <span class="sr-only">More</span>
+
+              <svg
+                aria-hidden="true"
+                class="w-6 h-6"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+                />
+              </svg>
+            </button>
+
+            <!-- Mobile sub header -->
+            <div
+              x-transition:enter="transform transition-transform"
+              x-transition:enter-start="translate-y-full opacity-0"
+              x-transition:enter-end="translate-y-0 opacity-100"
+              x-transition:leave="transform transition-transform"
+              x-transition:leave-start="translate-y-0 opacity-100"
+              x-transition:leave-end="translate-y-full opacity-0"
+              x-show="isSubHeaderOpen"
+              @click.away="isSubHeaderOpen = false"
+              class="absolute flex items-center justify-between p-2 bg-white rounded-md shadow-lg sm:hidden top-16 left-5 right-5"
+            >
+              <!-- Seetings button -->
+              <button
+                @click="isSettingsPanelOpen = true; isSubHeaderOpen = false"
+                class="p-2 text-gray-400 bg-white rounded-lg shadow-md hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
+              >
+                <span class="sr-only">Settings</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+              </button>
+              <!-- Messages button -->
+              <button
+                @click="isSidebarOpen = true; currentSidebarTab = 'messagesTab'; isSubHeaderOpen = false"
+                class="p-2 text-gray-400 bg-white rounded-lg shadow-md hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
+              >
+                <span class="sr-only">Toggle message panel</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                  />
+                </svg>
+              </button>
+              <!-- Notifications button -->
+              <button
+                @click="isSidebarOpen = true; currentSidebarTab = 'notificationsTab'; isSubHeaderOpen = false"
+                class="p-2 text-gray-400 bg-white rounded-lg shadow-md hover:text-gray-600 focus:outline-none focus:ring focus:ring-white focus:ring-offset-gray-100 focus:ring-offset-4"
+              >
+                <span class="sr-only">Toggle notifications panel</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />
+                </svg>
+              </button>
+              <!-- Github link -->
+              <a
+                href="https://github.com/kamona-ui/dashboard-alpine"
+                target="_blank"
+                class="p-2 text-white bg-black rounded-lg shadow-md hover:text-gray-200 focus:outline-none focus:ring focus:ring-black focus:ring-offset-gray-100 focus:ring-offset-2"
+              >
+                <span class="sr-only">github link</span>
+                <svg
+                  aria-hidden="true"
+                  class="w-6 h-6"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M12.026,2c-5.509,0-9.974,4.465-9.974,9.974c0,4.406,2.857,8.145,6.821,9.465 c0.499,0.09,0.679-0.217,0.679-0.481c0-0.237-0.008-0.865-0.011-1.696c-2.775,0.602-3.361-1.338-3.361-1.338 c-0.452-1.152-1.107-1.459-1.107-1.459c-0.905-0.619,0.069-0.605,0.069-0.605c1.002,0.07,1.527,1.028,1.527,1.028 c0.89,1.524,2.336,1.084,2.902,0.829c0.091-0.645,0.351-1.085,0.635-1.334c-2.214-0.251-4.542-1.107-4.542-4.93 c0-1.087,0.389-1.979,1.024-2.675c-0.101-0.253-0.446-1.268,0.099-2.64c0,0,0.837-0.269,2.742,1.021 c0.798-0.221,1.649-0.332,2.496-0.336c0.849,0.004,1.701,0.115,2.496,0.336c1.906-1.291,2.742-1.021,2.742-1.021 c0.545,1.372,0.203,2.387,0.099,2.64c0.64,0.696,1.024,1.587,1.024,2.675c0,3.833-2.33,4.675-4.552,4.922 c0.355,0.308,0.675,0.916,0.675,1.846c0,1.334-0.012,2.41-0.012,2.737c0,0.267,0.178,0.577,0.687,0.479 C19.146,20.115,22,16.379,22,11.974C22,6.465,17.535,2,12.026,2z"
+                  ></path>
+                </svg>
+              </a>
+            </div>
+          </header> %>
+
+
+        </div>
+      </div>
+
+      <!-- Panels -->
+
+      <!-- Settings Panel -->
+      <!-- Backdrop -->
+      <div
+        x-show="isSettingsPanelOpen"
+        class="fixed inset-0 bg-black bg-opacity-50"
+        @click="isSettingsPanelOpen = false"
+        aria-hidden="true"
+      ></div>
+      <!-- Panel -->
+      <section
+        x-transition:enter="transform transition-transform duration-300"
+        x-transition:enter-start="translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transform transition-transform duration-300"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="translate-x-full"
+        x-show="isSettingsPanelOpen"
+        class="fixed inset-y-0 right-0 w-64 bg-white border-l border-indigo-100 rounded-l-3xl"
+      >
+        <div class="px-4 py-8">
+          <h2 class="text-lg font-semibold">Settings</h2>
+        </div>
+      </section>
+    </div>
+
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.3/dist/alpine.min.js" defer></script>
+    <script>
+        const setup = () => {
+            return {
+            isSidebarOpen: false,
+            currentSidebarTab: null,
+            isSettingsPanelOpen: false,
+            isSubHeaderOpen: false,
+            watchScreen() {
+                if (window.innerWidth <= 1024) {
+                this.isSidebarOpen = false
+                }
+            },
+        }
+      }
+    </script>

@@ -1,0 +1,105 @@
+<div class="max-w-screen-lg  mx-auto">
+    <main class="mainArticles" style="height:93vh;">
+      <div class="mb-4 md:mb-0 w-full mx-auto relative">
+        <div class="px-4 lg:px-0">
+          <img src="<%= url_for(@article.header) =%>" class="w-full object-fill lg:rounded" style="background-size:100%;height: 28em;"/>
+        </div>
+        <div class="flex flex-col lg:flex-row lg:space-x-12">
+
+          <div class="px-4 lg:px-0 mt-4 text-gray-700 text-lg leading-relaxed w-full lg:w-3/4">
+            <h2 class="text-4xl font-semibold text-gray-800 leading-tight">
+            <%= @article.title %>
+            </h2>
+            <div class="flex py-2 flex-wrap">
+              <p class="">
+                Тэги: <% @article.tags.each do |t|%>
+                  <a href="/articles/tag/<%= t.name %>" class=" text-green-700 ">
+                    <%= t.name %>
+                  </a>
+                <% end %>
+              </p>
+              <span class="text-gray-400 md:ps-5 lg:ps-5 flex-2  ">Просмотров: <%= @article.impressionist_count %></span>
+            </div>
+            <p class="pb-6"><%= @article.content %></p>
+          </div>
+
+          <div class="w-full shadow lg:w-1/4 m-auto mt-12 max-w-screen-sm">
+            <div class="p-4 border-t border-b md:border md:rounded">
+              <div class="flex py-2 ">
+                <a href="/users/<%= @user.id %>">
+                  <%= image_tag(@user.avatar, class: "h-10 w-10 rounded-full mr-2 object-fill") %>
+                </a>
+                <div>
+                  <p class="font-semibold text-gray-700 text-sm"><%= @user.login %> </p>
+                  <p class="font-semibold text-gray-600 text-xs"> <%= @user.user_role.name %> </p>
+                </div>
+              </div>
+              <p class="text-gray-700 py-3">
+                <%= @user.desc %>
+              </p>
+              <% if current_user != @user %>
+                <% if current_user.subscribed_users.include?(@user) %>
+                  <%= button_to 'Отписаться', unsubscribe_user_path(@user), method: :delete, class:"px-2 py-1 text-gray-100 bg-rose-700 flex w-full items-center justify-center rounded" %>
+                <% else %>
+                  <%= button_to 'Подписаться', subscribe_user_path(@user), method: :post, class:"px-2 py-1 text-gray-100 bg-green-700 flex w-full items-center justify-center rounded" %>
+                <% end %>
+              <% end %>
+
+            </div>
+          </div>
+        </div>
+
+        <h3 class="text-4xl pb-2">Комментарии</h3>
+        <div class="mb-7">
+          <%= form_with(model: [@article, ArticlesComment.new], url: create_comment_article_path(@article)) do |form| %>
+            <%= form.text_area :content, placeholder: 'Add a comment...', rows: 4, class:"border-2 border-gray-300 rounded-lg p-2 w-full" %>
+            <%= form.submit 'Post Comment', class:"p-2 border-2 border-gray-300" %>
+          <% end %>
+        </div>
+        <% @article.articles_comments.reverse.each do |comment| %>
+          <div class=" w-full relative top-1/3">
+            <div class="relative grid grid-cols-1 gap-4 p-4 mb-8 border rounded-lg bg-white shadow-lg">
+                <div class="relative flex gap-4">
+                    <img src="<%= url_for(comment.user.avatar)  %>" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
+                    <div class="flex flex-col w-full">
+                        <div class="flex flex-row justify-between">
+                            <p class="relative text-xl whitespace-nowrap truncate overflow-hidden"><%= comment.user.login %></p>
+                            <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                        <p class="text-gray-400 text-sm"><%= comment.content %></p>
+                    </div>
+                </div>
+                <p class="-mt-4 text-gray-500"><%=  l(comment.created_at, format: :short) %></p>
+            </div>
+      <% end %>
+    </div>
+  </main>
+    <div class="mt-1 flex">
+    <div class="flex-1 p-2">
+      <%= link_to "Изменить", edit_article_path(@article), class:"p-1 rounded-full ps-2 pe-2  border-2 text-emerald-600 font-bold border-emerald-400" %>
+      <%= link_to "Удалить", article_path(@article),method: :delete,  class:"p-1 rounded-full ps-2 pe-2  border-2 text-rose-600 font-bold border-rose-400" %>
+    </div>
+    <div data-controller="alike" class="flex flex-end">
+      <% if @likes.nil? %>
+        <%= button_to image_tag("like.svg"), likes_path(likeable_type: 'Article', likeable_id: @article.id), method: :post, class:"pb-1 h-8 w-8" %>
+      <% else %>
+        <%= button_to image_tag("like_1.svg"), like_path(likeable_type: 'Article', likeable_id: @article.id), method: :delete, class:"pb-1 h-8 w-8"  %>
+      <% end %>
+
+      <% if @bookmarks.nil? %>
+        <%= button_to image_tag("bookmarks.svg"), bookmarks_path(bookmarkable_type: 'Article', bookmarkable_id: @article.id), method: :post, class:"h-8 w-8" %>
+      <% else %>
+        <%= button_to image_tag("bookmarks_1.svg"), bookmark_path(bookmarkable_type: 'Article', bookmarkable_id: @article.id), method: :delete, class:"h-8 w-8" %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<style>
+  .mainArticles{
+
+    overflow-y:scroll;
+  }
+  .mainArticles::-webkit-scrollbar{
+    width:0;
+  }
+</style>

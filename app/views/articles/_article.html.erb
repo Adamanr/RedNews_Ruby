@@ -1,0 +1,41 @@
+<div id="<%= dom_id article %>">
+   <div class="w-full">
+            <div class="group relative block h-64 sm:h-80 lg:h-96">
+            <span class="absolute inset-0 border-2 border-dashed border-black"></span>
+            <div
+                class="relative mainBlock flex h-full transform items-end  bg-white transition-transform group-hover:-translate-x-2 group-hover:-translate-y-2"
+                style="background:linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(143, 143, 143, 0) 56.24%, rgba(0, 0, 0, 0.8) 75.39%), url(<%= url_for(article.header.variant(resize_to_fill: [1000, 1000])) %>) center; background-size:100%"
+                <%# style="background-image:url();" %>
+              >
+                <div
+                class="p-4 !pt-0 transition-opacity group-hover:absolute group-hover:opacity-0 sm:p-6 "
+                >
+                <h2 class="mt-4 lg:text-2xl md:text-xl text-white font-bold text-x sm:text-2xl"><%= article.title %></h2>
+                </div>
+
+                <div class="absolute hoverBlock  w-full md:p-4 p-4 opacity-0 transition-opacity h-full  group-hover:bg-gray-500 group-hover:relative group-hover:opacity-100 sm:p-6 lg:p-8">
+                    <h3 class="lg:mt-2 md:mt-2 lg:text-xl md:text-xl text-xm font-medium sm:text-xm"><%= article.title %></h3>
+                    <span class="md:mb-3 text-gray-400 md:text-xm text-xs font-bold">Adaman</span>
+
+                    <p class="md:mt-4 lg:mt-4 text-sm lg:text-base md:text-xs sm:text-base">
+                        Test
+                    </p>
+                    <div class="absolute bottom-20 gap-3 grid grid-cols-3">
+                      <% article.tags.each do |t|%>
+                        <p class="p-1 font-bold bg-rose-300 text-white text-center text-sm rounded-lg"><%= t.name %></p>
+                      <% end %>
+                    </div>
+                    <%= link_to "Читать полностью", article, class:"lg:mt-4 md:mt-4  border-2 hover:bg-gray-400 hover:shadow-xl hover:font-bold text-xs md:text-x lg:text-xl hover:text-white border-gray-500 absolute p-2 lg:bottom-4 md:bottom-4 font-bold"%>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+  .hoverBlock{}
+  .mainBlock{
+    background-position:center;
+    background-size:100%;
+  }
+</style>
