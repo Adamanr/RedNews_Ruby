@@ -41,7 +41,7 @@
                             <a class="hover:text-gray-400 text-gray-900 transition duration-150 ease-in-out" href="/articles/<%= a.id %>"><%= a.title %></a>
                         </h3>
                     </header>
-                    <p class="text-lg text-gray-400 flex-grow"><%= a.body[0..125] + '...' %></p>
+                    <h1 class="text-lg text-gray-500  flex-grow "><%= a.content.to_s[0...150] %>..</h1>
                     <footer class="flex items-center mt-4">
                         <a href="/articles/<%= a.id %>">
                             <img class="rounded-full h-8 w-8 flex-shrink-0 mr-4" src="<%= url_for(a.header) %>" alt="Author 04">

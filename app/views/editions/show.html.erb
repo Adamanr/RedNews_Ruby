@@ -18,8 +18,10 @@
               </div>
             </div>
 
+
           <div class="w-full grid grid-cols-2 ms-5 lg:w-4/12 lg:order-3 lg:text-right lg:self-center">
-              <div class="py-6 w-full md:px-3 mt-2  sm:mt-0">
+          <% if @edition.verified  %>
+          <div class="py-6 w-full md:px-3 mt-2  sm:mt-0">
                 <a href="/events/new"><button class="bg-pink-500 sn:w-full active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150">
                     Написать статью
                   </button>
@@ -36,6 +38,8 @@
                   </button>
                 <% end %>
               </div>
+            <% end %>
+
             </div>
 
             <div class="w-full lg:w-4/12 px-4 lg:order-1">

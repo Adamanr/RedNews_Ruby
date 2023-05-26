@@ -79,4 +79,4 @@ gem "file_validators", "~> 3.0"
 
 gem "acts-as-taggable-on", "~> 9.0"
 
-gem "impressionist", "~> 2.0"
+gem "impressionist"

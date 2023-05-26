@@ -5,7 +5,7 @@
 </style>
 <div class="p-2 ">
     <h1 class="text-4xl">
-        Новости в <span class="text-blue-400"><%= params[:name] %></span>
+        Новости в городе - <span class="text-blue-400"><%= params[:name] %></span>
     </h1>
     <div class="eventsList grid md:grid-cols-3 h-full overlow-y-scroll lg:grid-cols-3 md:gap-4 lg:gap-4">
         <% @events.each do |u|%>

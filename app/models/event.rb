@@ -4,6 +4,8 @@ class Event < ApplicationRecord
   acts_as_taggable_on :tags
   is_impressionable counter_cache: true, column_name: :impressions_count
   belongs_to :user
+  is_impressionable counter_cache: true
+
 
   has_rich_text :content
 

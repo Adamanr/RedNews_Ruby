@@ -2,7 +2,8 @@ class Article < ApplicationRecord
   belongs_to :user
   has_one_attached :header
   acts_as_taggable_on :tags
-  is_impressionable
+  is_impressionable counter_cache: true
+
 
   has_many :article_bookmarks
   has_many :users, through: :article_bookmarks

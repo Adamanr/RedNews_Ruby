@@ -6,7 +6,7 @@ export default class extends Controller {
     async submit() {
         let id = this.editionTarget.value
         console.log(id)
-        fetch("http://127.0.0.1:3000/admin/submit/" + id)
+        fetch("https://redrust.ru/admin/submit/" + id)
             .then(() => location.reload())
             .then((json) => console.log(json))
     }
@@ -14,7 +14,7 @@ export default class extends Controller {
     async delete() {
         let id = this.editionTarget.value
         console.log(id)
-        fetch("http://127.0.0.1:3000/admin/delete/" + id)
+        fetch("https://redrust.ru/admin/delete/" + id)
             .then(() => location.reload())
             .then((json) => console.log(json))
     }

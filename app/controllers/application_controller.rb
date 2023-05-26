@@ -3,7 +3,8 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, except: [:public]
   skip_before_action :authenticate_user!
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
-
+  protect_from_forgery with: :null_session
+  
   def not_found
     redirect_to root_path, alert: 'Страница не найдена'
   end

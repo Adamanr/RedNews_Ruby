@@ -1,28 +1,33 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-    static targets = ['content'];
-    z
+    static targets = ['content', 'contents'];
+
     connect() {
         this.showFeed();
     }
 
     showFeed() {
+        let id = this.contentsTarget.value
+        console.log(id)
         let feed = document.getElementById("feed")
         let bookmarks = document.getElementById("bookmarks")
 
-        bookmarks.classList.remove('underline')
+        if (bookmarks != null) {
+            bookmarks.classList.remove('underline')
+        }
         feed.classList.add('underline')
-        this.loadContent('/users/1/feed');
+        this.loadContent('/users/' + id + '/feed');
     }
 
     showBookmarks() {
         let bookmarks = document.getElementById("bookmarks")
         let feed = document.getElementById("feed")
+        let id = this.contentsTarget.value
 
         feed.classList.remove('underline')
         bookmarks.classList.add('underline')
-        this.loadContent('/users/1/bookmarks');
+        this.loadContent('/users/' + id + '/bookmarks');
     }
 
     loadContent(url) {

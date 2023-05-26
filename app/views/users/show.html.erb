@@ -33,7 +33,7 @@
                 </div>
                 <%# <%= @user.user_role.name %>
             </div>
-            <div class="flex justify-center items-center gap-2 my-3">
+            <div class="flex flex-wrap justify-center items-center gap-2 my-3">
                 <div class="font-semibold text-center mx-4">
                     <p class="text-black"><%= @articles_count %></p>
                     <span class="text-gray-400">Статьи</span>
@@ -189,9 +189,11 @@
     </aside>
 
     <article class="">
-        <div data-controller="feed">
-            <button data-action="click->feed#showFeed" id="feed" class="text-blue-500  decoration-blue-200 underline-offset-8 pb-4 text-2xl">Лента</button>
-            <button data-action="click->feed#showBookmarks" id="bookmarks" class="text-blue-500  decoration-blue-200 underline-offset-8 pb-4 text-2xl">Закладки</button>
+        <div data-controller="feed" >
+            <button data-feed-target="contents" value="<%= @user.id %>"  data-action="click->feed#showFeed" id="feed" class="text-blue-500  decoration-blue-200 underline-offset-8 pb-4 text-2xl">Лента</button>
+            <% unless @user.id != current_user.id %>
+                <button data-feed-target="contents" value="<%= @user.id %>"  data-action="click->feed#showBookmarks" id="bookmarks" class="text-blue-500  decoration-blue-200 underline-offset-8 pb-4 text-2xl">Закладки</button>
+            <% end  %>
             <div data-feed-target="content"></div>
         </div>
     </article>

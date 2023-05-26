@@ -21,7 +21,7 @@ class ArticlesController < ApplicationController
   # GET /articles/1 or /articles/1.json
   def show
     @user = User.find(@article.user_id)
-    impressionist(@article)
+    #impressionist(@article)
     @bookmarks = Bookmark.find_by(user_id: current_user.id, bookmarkable_id:@article.id, bookmarkable_type: "Article")
     @likes = Like.find_by(user_id: current_user.id, likeable_id:@article.id, likeable_type: "Article")
 
