@@ -6,11 +6,21 @@ class UsersController < ApplicationController
     @events_count = Event.where(user_id: @user.id).count
     @popular_posts_user = Event.where(user_id: @user.id).order(impressions_count: :desc).limit(2)
   end
+
   def feed
     @user = User.find(params[:id])
     @user_posts = Article.where(user_id: @user.id) + Event.where(user_id: @user.id)
 
     render partial: 'users/blocks/feed', locals: { user: current_user }
+  end
+
+  def find
+    search = params[:search]
+    if search == "all"
+      @users = User.all
+    else
+      @users = User.where("login LIKE ?", "%#{params[:search]}%")
+    end
   end
 
   def bookmarks
@@ -22,7 +32,11 @@ class UsersController < ApplicationController
     post_list = []
 
     current_user.subscribed_users.each do |sub|
-      post_list << Event.where(user_id: sub.id) + Article.where(user_id:sub.id)
+      post_list << Article.where(user_id:sub.id)
+    end
+    sub_edition = EditionSubscription.where(user_id:current_user.id)
+    sub_edition.each do |sub|
+      post_list << Event.where(edition_id:sub.edition_id)
     end
     @posts = post_list.flatten
   end

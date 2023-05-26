@@ -13,6 +13,8 @@ class RegistrationsController < Devise::RegistrationsController
 
   protected
   def after_update_path_for(resource)
-    users_path(resource) # Здесь user_path замените на путь к методу show, соответствующий вашей реализации
+    "/users/" + current_user.id.to_s # Здесь user_path замените на путь к методу show, соответствующий вашей реализации
   end
+
+
 end

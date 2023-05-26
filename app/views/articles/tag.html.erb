@@ -1,7 +1,4 @@
-<!--
-Include Tailwind JIT CDN compiler
-More info: https://beyondco.de/blog/tailwind-jit-compiler-via-cdn
--->
+
 <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
 
 <!-- Snippet -->
@@ -12,7 +9,7 @@ More info: https://beyondco.de/blog/tailwind-jit-compiler-via-cdn
 </style>
 <section class="tagSection justify-center antialiased overflow-y-scroll h-full">
 
-    <h1 class="max-w-6xl mt-4 mx-auto p-4 mb-4 sm:px-6 text-3xl font-bold ">Статьи по тэгу - <span class="text-blue-500"><%= params[:tag] %></span></h1>
+    <h1 class="max-w-6xl mt-4 mx-auto p-4 mb-4 sm:px-6 text-3xl font-bold ">Статьи по тэгу - <span class="text-blue-500"><%= params[:tag].gsub('_',' ') %></span></h1>
     <% @articles.each do |a|%>
 
         <div class="max-w-6xl sn:mt-4 md:mt-0 mx-auto p-4 sm:px-6 text-gray-200">
@@ -30,7 +27,7 @@ More info: https://beyondco.de/blog/tailwind-jit-compiler-via-cdn
                             <ul class="flex flex-wrap text-xs font-medium -m-1">
                                 <% a.tags.each do |t| %>
                                 <li class="m-1">
-                                    <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name %></a>
+                                    <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name.gsub('_',' ') %></a>
                                 </li>
                                 <% end %>
                             </ul>

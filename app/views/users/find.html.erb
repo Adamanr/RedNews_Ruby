@@ -2,7 +2,10 @@
     .usersList::-webkit-scrollbar {
         width:0;
     }
-
+    /*
+ * View a PURE 100% Tailwind CSS version here:
+ * https://play.tailwindcss.com/Vg6H4j8Fux
+ */
 
 .glow {
   top: -10%;
@@ -107,11 +110,7 @@
 
 <section class="usersList dark:bg-gray-900 h-full overflow-y-scroll">
     <div class="md:container px-6 py-10 mx-auto">
-        <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl dark:text-white">Пользователи</h1>
-        <p class="md:max-w-5xl sn:w-full md:mx-auto my-6 md:text-center text-gray-500 dark:text-gray-300">
-            На этой странице вы можете найти зарегистрированных пользователей нашего портала, которые активно участвуют в обсуждении новостей и событий. Здесь вы можете найти интересных людей, которые разделяют ваши интересы и мнения, и подписаться на их аккаунты, чтобы быть в курсе всех их новых комментариев и обсуждений.
-        </p>
-        <div class="bg-gray-100 flex flex-col justify-center">
+        <h1 class="text-3xl font-semibold text-center text-gray-800 capitalize lg:text-4xl dark:text-white">Поиск пользователя по логину - <%= params[:search] %></h1>
         <div class="relative p-12 w-full sm:max-w-3xl sm:mx-auto">
             <div class="overflow-hidden z-0 rounded-full relative p-3">
                 <form role="form" data-controller="search" class="relative flex z-50 bg-white rounded-full">
@@ -124,7 +123,6 @@
                 <div class="glow glow-4 z-40 bg-rose-400 absolute"></div>
             </div>
         </div>
-
         <div class="grid grid-cols-1 gap-8 mt-8 xl:mt-16 md:grid-cols-2 xl:grid-cols-4">
         <% @users.each do |u| %>
                 <a href="/users/<%= u.id %>">
@@ -166,4 +164,16 @@
             <% end %>
         </div>
     </div>
+  </div>
 </section>
+<div x-show="open" class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60" x-data="{ open: true }">
+<div class="bg-gray-800 text-gray-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
+  <div>👉 <a class="hover:underline ml-1" href="/users/find/all" >Вернуться обратно</a></div>
+    <button class="text-gray-500 hover:text-gray-400 ml-5" @click="open = false">
+        <span class="sr-only">Close</span>
+        <svg class="w-4 h-4 flex-shrink-0 fill-current" viewBox="0 0 16 16">
+            <path d="M12.72 3.293a1 1 0 00-1.415 0L8.012 6.586 4.72 3.293a1 1 0 00-1.414 1.414L6.598 8l-3.293 3.293a1 1 0 101.414 1.414l3.293-3.293 3.293 3.293a1 1 0 001.414-1.414L9.426 8l3.293-3.293a1 1 0 000-1.414z" />
+        </svg>
+    </button>
+</div>
+</div

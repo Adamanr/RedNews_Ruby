@@ -1,15 +1,23 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["find"]
+  static targets = ["find", "users"]
 
   find() {
     let search = this.findTarget.value
     if (search == "") {
-      window.location.href = "http://127.0.0.1:3000/news/find/all" + search
+      window.location.href = "https://redrust.ru/news/find/all" + search
     } else {
-      window.location.href = "http://127.0.0.1:3000/news/find/" + search
+      window.location.href = "https://redrust.ru/news/find/" + search
     }
+  }
 
+  find_users() {
+    let search = this.usersTarget.value
+    if (search == "") {
+      window.location.href = "http://redrust.ru/users/find/all" + search
+    } else {
+      window.location.href = "http://redrust.ru/users/find/" + search
+    }
   }
 }

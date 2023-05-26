@@ -18,3 +18,6 @@ application.register("feed", FeedController)
 
 import SearchController from "./search_controller"
 application.register("search", SearchController)
+
+import SubscribeController from "./subscribe_controller"
+application.register("subscribe", SubscribeController)

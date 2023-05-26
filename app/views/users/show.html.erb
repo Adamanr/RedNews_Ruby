@@ -127,12 +127,14 @@
                 <% if current_user.id == @user.id %>
                     <div class='flex justify-between items-center'>
                         <span class="text-ms text-gray-400">Данный аккаунт включён в список администраторов</span>
-                        <button class='flex items-center justify-center text-xs font-medium rounded-full px-4 py-2 space-x-1 bg-white text-black'>
-                        <span>Панель администратора</span>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                            <path d='M5 12h13M12 5l7 7-7 7' />
-                        </svg>
-                        </button>
+                        <a href="/admin">
+                            <button class='flex items-center justify-center text-xs font-medium rounded-full px-4 py-2 space-x-1 bg-white text-black'>
+                            <span>Панель администратора</span>
+                            <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='#000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                                <path d='M5 12h13M12 5l7 7-7 7' />
+                            </svg>
+                            </button>
+                        </a>
                     </div>
                 <% end %>
             </div>

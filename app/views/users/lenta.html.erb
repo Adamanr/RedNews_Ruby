@@ -29,9 +29,9 @@
                                 <% a.tags.each do |t|%>
                                     <li class="m-1">
                                         <% if a.is_a? Event.class%>
-                                            <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/news/tag/<%= t.name %>"><%= t.name %></a>
+                                            <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/news/tag/<%= t.name %>"><%= t.name.gsub('_',' ') %></a>
                                         <% else %>
-                                            <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name %></a>
+                                            <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name.gsub('_',' ') %></a>
                                         <% end %>
                                     </li>
                                 <% end %>
@@ -44,7 +44,7 @@
                     <h1 class="text-lg text-gray-500  flex-grow "><%= a.content.to_s[0...150] %>..</h1>
                     <footer class="flex items-center mt-4">
                         <a href="/articles/<%= a.id %>">
-                            <img class="rounded-full h-8 w-8 flex-shrink-0 mr-4" src="<%= url_for(a.header) %>" alt="Author 04">
+                            <img class="rounded-full h-8 w-8 flex-shrink-0 mr-4" src="<%= url_for(a.user.avatar) %>" alt="Author 04">
                         </a>
                         <div>
                             <a class="font-medium text-gray-700 hover:text-gray-500 transition duration-150 ease-in-out" href="/users/<%= a.user.id %>"><%= a.user.login %></a>

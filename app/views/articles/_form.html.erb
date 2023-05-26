@@ -40,8 +40,8 @@
             class="mb-3 block text-base font-medium text-[#07074D]">
             Тэги
           </label>
-          <%= form.text_field :tag_list, placeholder:"Напиши 5 тэгов через запятую", value: @article.tag_list.join(', '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
-
+          <%= form.text_field :tag_list, placeholder:"Напишите 5 тэгов через пробел", value: @article.tag_list.join(' '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+          <span class="text-sm text-gray-400 ps-2">Пример тэгов - Артемий_Лебедев Мир Новости</span>
         </div>
       </div>
       <div data-controller="file-upload">

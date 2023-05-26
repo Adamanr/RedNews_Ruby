@@ -32,4 +32,26 @@ class AdminsController < ApplicationController
       render json: @edition, status: 500
     end
   end
+
+  def add_admin
+    user_id = params[:id]
+    @u = User.find(user_id)
+    @u.verified = true
+    if @u.save
+      render json: @u
+    else
+      render json: @u, status: 500
+    end
+  end
+
+  def un_admin
+    user_id = params[:id]
+    @u = User.find(user_id)
+    @u.verified = false
+    if @u.save
+      render json: @u
+    else
+      render json: @u, status: 500
+    end
+  end
 end

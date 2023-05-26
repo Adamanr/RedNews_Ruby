@@ -4,7 +4,7 @@
   }
 </style>
 
-<body class="flex bg-gray-100" style="height:100vh;" >
+<body class="flex bg-gray-100 w-full" style="height:100vh;" >
   <aside class="hidden  sm:flex sm:flex-col">
     <a href="#" class="inline-flex items-center justify-center h-20 w-20 bg-purple-600 hover:bg-purple-500 focus:bg-purple-500">
       <svg fill="none" viewBox="0 0 64 64" class="h-12 w-12">
@@ -239,10 +239,21 @@
             <ul class="p-6 space-y-6">
               <% @users.each do |u| %>
                 <li class="flex items-center">
+                  <% if u.verified %>
+                  <div class="h-10 w-10 mr-3 bg-[#5E17F4]-100 ring-4 ring-[#5E17F4] rounded-full overflow-hidden">
+                    <img src="<%= url_for(u.avatar) %>" alt="Annette Watson profile picture">
+                  </div>
+                  <% else %>
                   <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
                     <img src="<%= url_for(u.avatar) %>" alt="Annette Watson profile picture">
                   </div>
-                  <span class="text-gray-600"><%= u.login %></span>
+                  <% end %>
+
+                  <a href="/users/<%= u.id %>" class="text-gray-600"><%= u.login %></a>
+                  <div data-controller="admin">
+                    <button data-admin-target="user" value="<%= u.id %>" data-action="click->admin#add_admin" class="text-xl bg-emerald-400 rounded-lg text-white ms-4 ps-2 pe-2 border-2 border-emerald-400">+</button>
+                    <button data-admin-target="user" value="<%= u.id %>" data-action="click->admin#un_admin" class="text-xl bg-rose-400 rounded-lg text-white ms-2 ps-2 pe-2 border-2 border-rose-400">-</button>
+                  </div>
                   <span class="ml-auto font-semibold"><%= user_post_count(u.id) %></span>
                 </li>
               <% end %>

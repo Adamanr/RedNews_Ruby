@@ -31,13 +31,16 @@ Rails.application.routes.draw do
     get '/admin', to: 'admins#index'
     get '/admin/submit/:id', to: 'admins#submit'
     get '/admin/delete/:id', to: 'admins#delete'
+    get '/admin/admin/:id', to: 'admins#add_admin'
+    get '/admin/unadmin/:id', to: 'admins#un_admin'
 
     get '/articles_get', to: 'users#articles'
     get '/updates_get', to: 'users#news'
 
     get '/users/:id', to: 'users#profile'
     get '/users/:id/lenta', to: 'users#lenta'
-    get '/all/users', to: 'users#users'
+    get '/users/find/all', to: 'users#users'
+    get '/users/find/:search', to: 'users#find'
 
     get '/editions', to: 'editions#index'
     get '/editions', to: 'editions#new'
@@ -60,6 +63,16 @@ Rails.application.routes.draw do
     get '/news/category/:category', to: 'events#category'
     get '/news/city/:name', to: 'events#city'
     get '/news/find/:search', to: 'events#find'
+
+
+    get '/about', to:'mains#about'
+    get '/publication_rules', to:'mains#publication_rules'
+    get '/privacy_policy', to:'mains#privacy_policy'
+    get '/disclaimer_of_liability', to:'mains#disclaimer_of_liability'
+    get '/archive', to:'mains#archive'
+    get '/to_authors', to:'mains#to_authors'
+    get '/advertisement', to:'mains#advertisement'
+    get '/career', to:'mains#career'
 
     root 'mains#index'
   end

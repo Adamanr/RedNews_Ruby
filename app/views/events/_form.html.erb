@@ -1,9 +1,8 @@
 <style>
-  body {
-  height:100vh;
-}
+
 
 .mainBlock{
+  height:97vh;
   overflow-y: scroll;
 }
 
@@ -36,8 +35,8 @@
             <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
               Тэги
             </label>
-            <%= form.text_field :tag_list, placeholder:"Напиши 5 тэгов через запятую", value: @event.tag_list.join(', '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
-            <span class="text-sm text-gray-400 ps-2">Пример: О_главном, Популярное, Новое </span>
+            <%= form.text_field :tag_list, placeholder:"Напиши 5 тэгов через пробел", value: @event.tag_list.join(', '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+            <span class="text-sm text-gray-400 ps-2">Пример: О_главном Популярное Новое </span>
           </div>
           <div class="">
             <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
@@ -82,14 +81,11 @@
 
       </div>
 
-
-
-
       <div class="mt-5 mb-5">
         <label for="message" class="mb-3 block text-base font-medium text-[#07074D]">
           Текст новости
         </label>
-        <%= form.rich_text_area :content, class:"w-full  resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+        <%= form.rich_text_area :content, class:"w-full h-full  resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
       </div>
       <%= form.submit value:"Создать новость", class:"hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none  h-full" %>
     <% end %>

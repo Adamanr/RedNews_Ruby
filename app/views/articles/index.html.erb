@@ -7,7 +7,7 @@
 <div class="mainEvent max-w-screen-xl h-full overflow-y-scroll mx-auto">
     <div class="mx-auto">
       <details class="open:bg-white dark:open:bg-slate-900 open:ring-1 open:ring-black/5 p-4 dark:open:ring-white/10 open:shadow-lg  rounded-lg">
-        <summary class="text-3xl font-bold flex leading-6 text-slate-900 dark:text-white font-semibold select-none">
+        <summary class="text-3xl font-bold flex leading-6 text-slate-900 font-semibold select-none">
           <span>Актуальные статьи</span>
           <svg class="w-8 ps-2 pb-1 h-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title></title> <g id="Complete"> <g id="info-circle"> <g> <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke="#0f172a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></circle> <line fill="none" stroke="#0f172a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="12" y2="16"></line> <line fill="none" stroke="#0f172a" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="8" y2="8"></line> </g> </g> </g> </g></svg>
 
@@ -27,10 +27,10 @@
             >
               <div class="absolute left-0 bottom-0 w-full h-full z-10"
                 style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"></div>
-              <img src="<%= url_for(@articles[0].header) %>" class="absolute opacity-75 left-0 top-0 w-full h-full rounded z-0 object-cover" />
+              <img src="<%= url_for(@articles[0].header) %>" class="absolute opacity-75 left-0 top-0 w-full h-full rounded z-0 object-fill" />
               <div class="p-4 absolute bottom-0 left-0 z-20">
                 <% @articles[0].tag_list.each do |tag|%>
-                  <span class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2"><%= tag %></span>
+                  <span class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2"><%= tag.capitalize %></span>
                 <%end%>
                 <h2 class="text-4xl font-semibold text-gray-100 leading-tight">
                   <%= @articles[0].title %>
@@ -52,11 +52,14 @@
             >
               <div class="absolute left-0 top-0 w-full h-full z-10"
                 style="background-image: linear-gradient(180deg,transparent,rgba(0,0,0,.7));"></div>
-              <img src="<%= url_for(@articles[1].header) %>" class="absolute left-0 top-0 w-full h-full rounded opacity-75 z-0 object-cover" />
+              <img src="<%= url_for(@articles[1].header) %>" class="absolute left-0 top-0 w-full h-full rounded opacity-75 z-0 object-full" />
               <div class="p-4 absolute bottom-0 left-0 z-20">
-                <% @articles[1].tag_list.each do |tag|%>
-                  <span class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2"><%= tag %></span>
-                <%end%>
+                <div class="flex flex-wrap gap-2">
+                  <% @articles[1].tag_list.each do |tag|%>
+                    <span class="px-4 py-1 bg-black text-gray-200 inline-flex items-center justify-center mb-2"><%= tag.capitalize  %></span>
+                  <%end%>
+                </div>
+
                 <h2 class="text-3xl font-semibold text-gray-100 leading-tight"> <%= @articles[1].title %></h2>
                 <div class="flex mt-3">
                   <img
@@ -96,16 +99,16 @@
           <% @articles.each do |a| %>
             <div class="w-full ">
 
-              <a class="block rounded w-full lg:flex mb-10"
+              <a class="block h-full rounded w-full lg:flex mb-10"
                 href="/articles/<%= a.id %>"
               >
                 <div
-                  class="h-48 lg:w-48 flex-none bg-cover text-center overflow-hidden "
-                  style="background-image: url('<%= url_for(a.header) %>')"
+                  class="h-68 w-full lg:w-48 flex-none bg-cover bg-center text-center overflow-hidden "
+                  style="background-image: url('<%= url_for(a.header) %>'); background-size:100;"
                   title="deit is very important"
                 >
                 </div>
-                <div class="bg-white w-full rounded px-4 flex flex-col leading-normal">
+                <div class="bg-white w-full p-2 rounded px-4 flex flex-col leading-normal">
                   <div class="w-full">
                     <div class="mt-2 text-gray-700 font-bold text-2xl mb-2">
                       <%= a.title %>
@@ -138,7 +141,7 @@
               <li class="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
                 <a href="/articles/tag/<%= @popular_tags[0] %>" class="flex items-center text-gray-600 cursor-pointer">
                   <span class="inline-block h-4 w-4 bg-green-300 mr-3"></span>
-                  <%= @popular_tags[0].name %>
+                  <%= @popular_tags[0].name.capitalize! %>
                   <span class="text-gray-500 ml-auto">Статей: <%= @popular_tags[0].count %></span>
                   <i class='text-gray-500 bx bx-right-arrow-alt ml-1'></i>
                 </a>
@@ -146,7 +149,7 @@
               <li class="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
                 <a href="/articles/tag/<%= @popular_tags[0] %>" class="flex items-center text-gray-600 cursor-pointer">
                   <span class="inline-block h-4 w-4 bg-indigo-300 mr-3"></span>
-                  <%= @popular_tags[1].name %>
+                  <%= @popular_tags[1].name.capitalize! %>
                   <span class="text-gray-500 ml-auto">Статей: <%= @popular_tags[0].count %></span>
                   <i class='text-gray-500 bx bx-right-arrow-alt ml-1'></i>
                 </a>
@@ -154,7 +157,7 @@
               <li class="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
                 <a href="/articles/tag/<%= @popular_tags[0] %>" class="flex items-center text-gray-600 cursor-pointer">
                   <span class="inline-block h-4 w-4 bg-yellow-300 mr-3"></span>
-                  <%= @popular_tags[2].name %>
+                  <%= @popular_tags[2].name.capitalize! %>
                   <span class="text-gray-500 ml-auto">Статей: <%= @popular_tags[0].count %></span>
                   <i class='text-gray-500 bx bx-right-arrow-alt ml-1'></i>
                 </a>
@@ -162,7 +165,7 @@
               <li class="px-1 py-4 border-b border-t border-white hover:border-gray-200 transition duration-300">
                 <a href="/articles/tag/<%= @popular_tags[0] %>" class="flex items-center text-gray-600 cursor-pointer">
                   <span class="inline-block h-4 w-4 bg-blue-300 mr-3"></span>
-                  <%= @popular_tags[3].name %>
+                  <%= @popular_tags[3].name.capitalize! %>
                   <span class="text-gray-500 ml-auto">Статей: <%= @popular_tags[0].count %></span>
                 <i class='text-gray-500 bx bx-right-arrow-alt ml-1'></i>
               </a>

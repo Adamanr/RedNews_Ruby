@@ -1,12 +1,13 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: [:show, :edit, :update, :destroy]
   # GET /articles or /articles.json
+  impressionist :actions => %i[show index]
 
   def index
     if params[:search].present?
       @articles = Article.joins(:user).where("users.name ILIKE ?", "%#{params[:search]}%")
     else
-      @articles = Article.all
+      @articles = Article.order(created_at: :desc)
     end
 
     @popular_tags = Article.tag_counts(limit: 4)
@@ -21,10 +22,10 @@ class ArticlesController < ApplicationController
   # GET /articles/1 or /articles/1.json
   def show
     @user = User.find(@article.user_id)
-    #impressionist(@article)
+    impressionist(@article)
     @bookmarks = Bookmark.find_by(user_id: current_user.id, bookmarkable_id:@article.id, bookmarkable_type: "Article")
     @likes = Like.find_by(user_id: current_user.id, likeable_id:@article.id, likeable_type: "Article")
-
+    @likes_count = Like.where(user_id: current_user.id, likeable_id:@article.id, likeable_type: "Article").count
   end
 
   # GET /articles/new

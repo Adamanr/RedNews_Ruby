@@ -60,11 +60,11 @@
 
       </div>
 
-        <h3 class="text-4xl pb-2">Комментарии</h3>
+        <h3 class="text-4xl pt-2 pb-2">Комментарии</h3>
         <div class="mb-7">
           <%= form_with(model: [@event, EventComment.new], url: create_comment_event_path(@event)) do |form| %>
-            <%= form.text_area :content, placeholder: 'Add a comment...', rows: 4, class:"w-full border-2 border-gray-300 p-2 rounded-lg" %>
-            <%= form.submit 'Post Comment', class:"p-2 border-2 border-gray-300" %>
+            <%= form.text_area :content, placeholder: 'Напишите свой отзыв о новости', rows: 4, class:"w-full border-2 border-gray-300 p-2 rounded-lg" %>
+            <%= form.submit 'Оставить комментарий', class:"p-2 border-2 border-gray-300" %>
           <% end %>
         </div>
        <% @event.event_comments.reverse.each do |comment| %>

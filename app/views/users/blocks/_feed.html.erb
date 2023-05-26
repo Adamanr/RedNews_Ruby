@@ -29,21 +29,23 @@
             <div class=" overflow-hidden rounded-xl col-span-3 max-h-[14rem]">
                 <img class="h-full w-full object-cover " src="<%= url_for(ups.header) %>" alt=""/>
             </div>
-            <h1 class="pt-2 px-1"><%= ups.content.to_s[0...150] %>..</h1>
-            <% if ups.is_a?(Event.class) %>
-                <span><%= link_to "Читать дальше", event_path(ups), class:"text-blue-300" %></span>
+            <h1 class="pt-2 px-1"><%= ups.content.to_s[0...150] %>..
+                <% if ups.is_a?(Event.class) %>
+                <span><%= link_to "Читать дальше", event_path(ups), class:"text-blue-300 px-1" %></span>
             <% else %>
-                <span><%= link_to "Читать дальше", article_path(ups), class:"text-blue-300" %></span>
+                <span><%= link_to "Читать дальше", article_path(ups), class:"text-blue-300 px-1" %></span>
             <% end %>
+            </h1>
+
         </div>
         <div class="flex w-full fw-bold border-t mt-5 border-gray-100">
-            <div class="mt-1  flex gap-5 flex-row text-xs">
+            <div class="mt-1  flex gap-5 flex-row ps-2 text-xs">
                 <%if ups.is_a?(Event) %>
                     <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-xl"> <%= ups.event_comments.count %></span></p>
                 <% else %>
                     <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-ms"> <%= ups.articles_comments.count %></span></p>
                 <% end %>
-                <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Просмотров: <span class="ml-1 text-gray-400 text-ms"> <%=  %></span></p>
+                <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Просмотров: <span class="ml-1 text-gray-400 text-ms"><%= ups.impressionist_count %></span></p>
             </div>
             <div class="mt-1 mx-5 w-full flex justify-end text-xs">
                 <p class="flex text-gray-700  rounded-md mb-2 mr-4 items-center">Лайков: <span class="ml-1 text-gray-400  text-ms">

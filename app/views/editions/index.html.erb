@@ -24,7 +24,7 @@
                     <img src="<%= url_for(e.logo) %>" alt="coin avatar" class="w-12 h-12 rounded-full" />
                     <div class="flex items-start justify-between w-full">
                         <div class="pl-3 w-full">
-                            <a href="/editions/<%= e.id %>" tabindex="0" class="focus:outline-none text-xl font-medium leading-5 text-gray-800"><%= e.name %></p>
+                            <a href="/editions/<%= e.id %>" tabindex="0" class="focus:outline-none  text-xl font-medium leading-5 text-gray-800"><%= e.name %></p>
                             <p tabindex="0" class="focus:outline-none text-sm leading-normal pt-2 text-gray-500"><%=  %></p>
                         </div>
                         <div role="img" aria-label="bookmark">
@@ -36,9 +36,9 @@
                 </div>
                 <div class="px-2 ">
                     <p tabindex="0" class="focus:outline-none text-sm leading-5 pb-4 text-gray-600"><%= e.desc %></p>
-                    <div tabindex="0" class="focus:outline-none flex absolute bottom-10">
-                        <div class="py-2 px-4 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100">#<%= e.name %></div>
-                        <div class="py-2 px-4 ml-3 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100">#<%= e.category %></div>
+                    <div tabindex="0" class="focus:outline-none flex flex-wrap w-full absolute bottom-10">
+                        <div class="py-2 px-4 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100"><%= e.name %></div>
+                        <div class="py-2 px-4 ml-3 text-xs leading-3 text-indigo-700 rounded-full bg-indigo-100"><%= e.category %></div>
                     </div>
                 </div>
             </div>

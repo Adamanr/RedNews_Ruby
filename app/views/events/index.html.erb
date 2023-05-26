@@ -131,7 +131,7 @@
             <% end %>
 
 
-            <% if @all_events[0...4].empty?%>
+            <% if @all_events.size >4 %>
                 <div class="mb-3">
                     <h1 class="text-3xl font-bold">Вчера</h1>
                     <p class="text-sm text-gray-500 uppercase font-bold"><%= l(Date.yesterday, format: :short)%></p>
