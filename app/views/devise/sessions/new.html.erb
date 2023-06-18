@@ -1,15 +1,15 @@
-<section class="bg-white dark:bg-[#f2f2f2]">
+<section class="bg-white">
     <div class="flex h-full bg-[#f2f2f2] justify-center min-h-screen">
 
         <div class="flex items-center p-8 bg-[#f2f2f2] mx-auto lg:px-12 ">
             <div class="w-full">
 
 
-                <h1 class="text-2xl font-semibold tracking-wider text-gray-800 capitalize dark:text-white">
+                <h1 class="text-2xl font-semibold tracking-wider text-gray-800 capitalize">
                     Вход в аккаунт
                 </h1>
 
-                <p class="mt-4 text-gray-500 dark:text-gray-400">
+                <p class="mt-4 text-gray-500">
                     Благодаря RedNews вы сможете получать самые актуальные новости на данный момент.<br>Если же у вас ещё нет аккаунта - <a href="/users/sign_up" class="text-blue-500">Регистрация</a> или перейдите на <a class="text-blue-500" href="/">Главная страница</a>
                 </p>
 
@@ -18,13 +18,13 @@
                         <div><%= msg %></div>
                     <% end %>
                   <div class="mt-4">
-                      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Почта</label>
-                      <%= f.email_field :email, autofocus: true,placeholder:"andrey@example.com", autocomplete: "email", class:"block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" %>
+                      <label class="block mb-2 text-sm text-gray-600">Почта</label>
+                      <%= f.email_field :email, autofocus: true,placeholder:"andrey@example.com", autocomplete: "email", class:"block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" %>
                   </div>
 
                   <div class="mt-4">
-                      <label class="block mb-2 text-sm text-gray-600 dark:text-gray-200">Пароль</label>
-                      <%= f.password_field :password, autocomplete: "current-password", placeholder:"Введите ваш пароль", class:"block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md dark:placeholder-gray-600 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-700 focus:border-blue-400 dark:focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" %>
+                      <label class="block mb-2 text-sm text-gray-600">Пароль</label>
+                      <%= f.password_field :password, autocomplete: "current-password", placeholder:"Введите ваш пароль", class:"block w-full px-5 py-3 mt-2 text-gray-700 placeholder-gray-400 bg-white border border-gray-200 rounded-md focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40" %>
                   </div>
                   <div class="mt-4 mb-4">
                     <% if devise_mapping.rememberable? %>

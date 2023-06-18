@@ -5,6 +5,7 @@ class Event < ApplicationRecord
   is_impressionable counter_cache: true, column_name: :impressions_count
   belongs_to :user
 
+  FORBIDDEN_WORDS = %w(гей сука)
 
   has_rich_text :content
 
@@ -16,7 +17,8 @@ class Event < ApplicationRecord
   has_many :users, through: :event_bookmarks
 
   validates :header, presence: true
-  validates :title, presence: true, length: { in: 10..100 }
+  validates :title, presence: true, length: { in: 10..100 }, exclusion: { in: FORBIDDEN_WORDS,
+    message: "Вы указали плохие слова в заголовке! Удалите их из текста" }
   validates :content, presence: true, length: { in: 150..20000 }
   validate :tag_limit
 
@@ -24,5 +26,6 @@ class Event < ApplicationRecord
 
   def tag_limit
     errors.add(:base, 'Превышено количество тэгов') if tag_list.count > 5
+
   end
 end

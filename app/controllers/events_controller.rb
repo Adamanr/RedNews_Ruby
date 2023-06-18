@@ -27,9 +27,9 @@ class EventsController < ApplicationController
   def show
     @user = User.find(@event.user_id)
     impressionist(@event)
-
     @bookmarks = Bookmark.find_by(user_id: current_user.id, bookmarkable_id:@event.id, bookmarkable_type: "Event")
     @likes = Like.find_by(user_id: current_user.id, likeable_id:@event.id, likeable_type: "Event")
+    @likes_count = Like.where( likeable_id:@event.id, likeable_type: "Event").count
 
   end
 
@@ -43,12 +43,18 @@ class EventsController < ApplicationController
   end
 
   def find
-    search = params[:search].gsub('_', ' ')
+    search = params[:search]
+    search = search.gsub('_', ' ') if search.present?
     if search == "all"
       @events = Event.all
     else
       @events = Event.where("title LIKE ?", "%#{params[:search]}%")
     end
+  end
+
+  def tag
+    tag_name = params[:tag]
+    @events = Event.tagged_with(tag_name)
   end
 
   # GET /events/new
@@ -59,6 +65,7 @@ class EventsController < ApplicationController
 
   # GET /events/1/edit
   def edit
+    @editions_list = Edition.where(user_id: current_user.id, verified: true)
   end
 
   # POST /events or /events.json
@@ -111,6 +118,17 @@ class EventsController < ApplicationController
       redirect_to @event, notice: 'Comment created successfully.'
     else
       redirect_to @event, alert: 'Failed to create comment.'
+    end
+  end
+  
+  def destroy_comment
+    @comment = EventComment.find(params[:comment_id])
+    @event = Event.find(params[:id])
+  
+    if @comment.destroy
+      redirect_to @event, notice: 'Comment deleted successfully.'
+    else
+      redirect_to @event, alert: 'Failed to delete comment.'
     end
   end
 

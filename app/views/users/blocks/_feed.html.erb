@@ -41,7 +41,7 @@
         <div class="flex w-full fw-bold border-t mt-5 border-gray-100">
             <div class="mt-1  flex gap-5 flex-row ps-2 text-xs">
                 <%if ups.is_a?(Event) %>
-                    <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-xl"> <%= ups.event_comments.count %></span></p>
+                    <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-ms"> <%= ups.event_comments.count %></span></p>
                 <% else %>
                     <p class="flex text-gray-700 font-normal rounded-md mb-2 mr-4 items-center">Комментариев:<span class="ml-1 text-gray-400 text-ms"> <%= ups.articles_comments.count %></span></p>
                 <% end %>

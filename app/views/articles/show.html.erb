@@ -1,8 +1,16 @@
 <div class="max-w-screen-lg  mx-auto">
     <main class="mainArticles" style="height:93vh;">
       <div class="mb-4 md:mb-0 w-full mx-auto relative">
-        <div class="px-4 lg:px-0">
+        <div class="relative px-4 lg:px-0">
           <img src="<%= url_for(@article.header) =%>" class="w-full object-fill lg:rounded" style="background-size:100%;height: 28em;"/>
+          <div class="absolute bottom-10 right-10">
+            <% @article.tags.each do |t|%>
+                    <a href="/articles/tag/<%= t.name %>" class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-indigo-600 hover:bg-indigo-700 font-bold transition duration-150 ease-in-out ">
+                      <%= t.name.gsub('_',' ').to_s.capitalize  %>
+                    </a>
+            <% end %>
+          </div>
+          
         </div>
         <div class="flex flex-col lg:flex-row lg:space-x-12">
 
@@ -11,14 +19,7 @@
             <%= @article.title %>
             </h2>
             <div class="flex py-2 flex-wrap">
-              <p class="gap-2">
-                Тэги: <% @article.tags.each do |t|%>
-                  <a href="/articles/tag/<%= t.name.capitalize! %>" class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out ">
-                    <%= t.name.gsub('_',' ') %>
-                  </a>
-                <% end %>
-              </p>
-              <span class="flex md:ps-5 md:text-2xl font-bold lg:ps-5 flex-2  "><%= image_tag("eye.svg",class:'h-8 me-2 w-8') %>Просмотров: <%= @article.impressionist_count %> <span class='text-rose-300 gap-1 font-bold flex'> <%= image_tag("like_1.svg",class:'ms-4 h-8 w-8') %>Лайки: <%= @likes_count %></></span>
+              <span class="flex md:text-2xl font-bold pt-2 flex-2  "><%= image_tag("eye.svg",class:'h-8 me-2 w-8') %>Просмотров: <%= @article.impressionist_count %> <span class='text-rose-300 gap-1 font-bold flex'> <%= image_tag("like_1.svg",class:'ms-4 h-8 w-8') %>Лайков: <%= @likes_count %></></span>
             </div>
             <div class="mt-1 flex flex-wrap">
               <% if @article.user_id == current_user.id %>
@@ -51,7 +52,7 @@
                   <%= image_tag(@user.avatar, class: "h-10 w-10 rounded-full mr-2 object-fill") %>
                 </a>
                 <div>
-                  <p class="font-semibold text-gray-700 text-sm"><%= @user.login %> </p>
+                  <a href="/users/<%= @user.id  %>" class="font-semibold text-gray-700 text-sm"><%= @user.login %> </a>
                   <p class="font-semibold text-gray-600 text-xs"> <%= @user.user_role.name %> </p>
                 </div>
               </div>
@@ -70,11 +71,11 @@
           </div>
         </div>
 
-        <h3 class="text-4xl pb-2">Комментарии</h3>
+        <h3 class="text-4xl pt-4 pb-2">Комментарии</h3>
         <div class="mb-7">
           <%= form_with(model: [@article, ArticlesComment.new], url: create_comment_article_path(@article)) do |form| %>
-            <%= form.text_area :content, placeholder: 'Add a comment...', rows: 4, class:"border-2 border-gray-300 rounded-lg p-2 w-full" %>
-            <%= form.submit 'Post Comment', class:"p-2 border-2 border-gray-300" %>
+            <%= form.text_area :content, placeholder: 'Напишите свой комментарий о статье', rows: 4, class:"border-2 border-gray-300 rounded-lg p-2 w-full" %>
+            <%= form.submit 'Отправить', class:"p-2 border-2 border-gray-300" %>
           <% end %>
         </div>
         <% @article.articles_comments.reverse.each do |comment| %>
@@ -83,14 +84,19 @@
                 <div class="relative flex gap-4">
                     <img src="<%= url_for(comment.user.avatar)  %>" class="relative rounded-lg -top-8 -mb-4 bg-white border h-20 w-20" alt="" loading="lazy">
                     <div class="flex flex-col w-full">
-                        <div class="flex flex-row justify-between">
-                            <p class="relative text-xl whitespace-nowrap font-bold truncate overflow-hidden"><%= comment.user.login %></p>
+                        <div class="flex relative flex-row justify-between">       
+                            <p class="text-xl whitespace-nowrap font-bold truncate overflow-hidden"><%= comment.user.login %></p>
+                            <% if current_user == comment.user || current_user.user_role_id == 4 %>
+                              <%= form_with url: destroy_comment_article_path(@article, comment.id),class:"absolute top-0 right-10 text-rose-500 font-bold", method: :delete, data: { confirm: 'Are you sure?' } do |form| %>
+                                <%= form.submit 'Удалить' %>
+                              <% end %>     
+                            <% end %>
                             <a class="text-gray-500 text-xl" href="#"><i class="fa-solid fa-trash"></i></a>
                         </div>
-                        <p class="text-gray-500 text-sm"><%= comment.content %></p>
+                        <p class="text-gray-500 text-sm"><%= l(comment.created_at, format: :short)  %></p>
                     </div>
                 </div>
-                <p class="-mt-4 text-gray-500"><%=  l(comment.created_at, format: :short) %></p>
+                <p class="-mt-4 text-gray-500"><%=  comment.content %></p>
             </div>
       <% end %>
     </div>

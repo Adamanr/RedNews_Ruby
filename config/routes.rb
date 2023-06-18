@@ -17,15 +17,17 @@ Rails.application.routes.draw do
 
     resources :articles do
       post 'create_comment', on: :member
+      delete 'destroy_comment/:comment_id', action: :destroy_comment, as: :destroy_comment, on: :member
     end
 
     resources :events do
       resource :event_bookmark, only: [:create, :destroy]
       post 'create_comment', on: :member
-      member do
-        post 'like'
-        delete 'unlike'
-      end
+      delete 'destroy_comment/:comment_id', action: :destroy_comment, as: :destroy_comment, on: :member
+      # member do
+      #   post 'like'
+      #   delete 'unlike'
+      # end
     end
 
     get '/admin', to: 'admins#index'
@@ -51,14 +53,14 @@ Rails.application.routes.draw do
 
     get '/article', to: 'articles#index'
     get '/articles/tag/:tag', to: 'articles#tag'
-    get '/article/find', to: 'articles#find'
+    get '/article/find/:search', to: 'articles#find'
     get '/article/selected', to: 'articles#selected'
     get '/article/like/:article_id/:user_id', to: 'articles#like'
     get '/article/unlike/:article_id/:user_id', to: 'articles#unlike'
 
     get '/news', to: 'events#index'
     get '/news/find/all', to: 'events#find'
-
+    get '/news/tag/:tag', to: 'events#tag'
     get '/news/:id', to: 'events#show'
     get '/news/category/:category', to: 'events#category'
     get '/news/city/:name', to: 'events#city'

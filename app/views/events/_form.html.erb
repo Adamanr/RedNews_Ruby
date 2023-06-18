@@ -35,14 +35,16 @@
             <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
               Тэги
             </label>
-            <%= form.text_field :tag_list, placeholder:"Напиши 5 тэгов через пробел", value: @event.tag_list.join(', '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
+            <%= form.text_field :tag_list, placeholder:"Напиши 5 тэгов через пробел", value: @event.tag_list.join(' '), class:"w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
             <span class="text-sm text-gray-400 ps-2">Пример: О_главном Популярное Новое </span>
           </div>
           <div class="">
             <label for="subject" class="mb-3 block text-base font-medium text-[#07074D]">
               От имени издательства
             </label>
-            <%= form.select :edition_id, options_for_select(@editions_list.map{ |value| [value.name, value.id]}),{}, { :class => 'span3 controls h-12 controls-row flex w-full items-center justify-between rounded bg-white p-2 ring-1 ring-gray-300' } %>
+            <% if @editions_list %>
+              <%= form.select :edition_id, options_for_select(@editions_list.map{ |value| [value.name, value.id]}),{}, { :class => 'span3 controls h-12 controls-row flex w-full items-center justify-between rounded bg-white p-2 ring-1 ring-gray-300' } %>
+            <% end %>
             <span class="text-sm text-gray-400 ">Выберите через какую группу опубликуете новость </span>
           </div>
 
@@ -87,7 +89,7 @@
         </label>
         <%= form.rich_text_area :content, class:"w-full h-full  resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-3 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" %>
       </div>
-      <%= form.submit value:"Создать новость", class:"hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none  h-full" %>
+      <%= form.submit value:"Готово", class:"hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none  h-full" %>
     <% end %>
   </div>
 </div>

@@ -1,4 +1,18 @@
-<div class=" sn:p-2 ">
+<div class=" sn:p-2 w-full  p-5 ps-6 space-y-3 z-0 ">
+    <div data-controller="search" class="w-full  space-y-3 z-0">
+        <div class="grid grid-cols-1 md:flex lg:flex  items-center p-2  bg-white rounded-xl shadow-lg hover:shadow-xl  transition duration-500">
+            <div  class="flex-1 flex bg-gray-100 p-2 me-2 space-x-4 rounded-t-lg md:rounded-lg  ">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 pt-2 ms-2 pe-2  md:mt-0 opacity-30" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input data-search-target="find" class="bg-gray-100 rounded-lg border-0 outline-none w-full" type="text" placeholder="Введите заголовок новости..." />
+            </div>
+
+            <button data-action="click->search#find" class="bg-red-600 py-4 px-4  text-white font-semibold rounded-b-lg md:rounded-lg hover:shadow-lg transition duration-3000 cursor-pointer">
+                <span>Поиск</span>
+            </button>
+        </div>
+    </div>
     <h1 class="text-4xl">
         <% if current_page? "/updates/find/all" %>
             Все новости
@@ -11,12 +25,14 @@
         <div class="bg-gray-100 m-auto w-full h-64 mt-5" style="background-image:url('<%= url_for(u.header) %>'); background-position: center; background-repeat: no-repeat; background-size: cover;">
             <div class="flex flex-row items-end h-full w-full">
                 <div class="flex flex-col w-full pb-3 pt-10 px-3 bg-gradient-to-t from-black text-gray-200">
-                <h3 class="text-base font-bold leading-5 uppercase"><a href="/news/<%= u.id %>"><%= u.title %></a></h3>
+                <h3 class="text-base font-bold leading-5"><a href="/news/<%= u.id %>"><%= u.title %></a></h3>
                 <div class="inline-flex items-center">
                     <span class="capitalize font-base text-xs my-1 mr-1"><%= u.user.login %></span>
-                    <svg class="stroke-current stroke-1 text-blue-600 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                    </svg>
+                    <% if u.user.verified? %>
+                        <svg class="stroke-current stroke-1 text-blue-600 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                        </svg>
+                    <%end %>
                 </div>
                 <div class="flex flex-row justify-between">
                     <div class="flex flex-row">
@@ -30,7 +46,7 @@
                         <svg class="w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                         </svg>
-                        <span class="text-xs ml-1 antialiased">1</span>
+                        <span class="text-xs ml-1 antialiased"><%= u.event_comments.count %></span>
                     </div>
                     <div class="w-max inline-flex ml-4 items-center">
                         <svg class="w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,11 +55,7 @@
                         <span class="text-xs ml-1 antialiased"><%= l(Time.now, format: :short)%></span>
                     </div>
                     </div>
-                    <div class="w-max">
-                    <svg class="w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
-                    </svg>
-                    </div>
+            
                 </div>
                 </div>
             </div>

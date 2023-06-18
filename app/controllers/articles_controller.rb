@@ -10,7 +10,7 @@ class ArticlesController < ApplicationController
       @articles = Article.order(created_at: :desc)
     end
 
-    @popular_tags = Article.tag_counts(limit: 4)
+    @popular_tags = Article.tag_counts.most_used(4)
 
 
     respond_to do |format|
@@ -25,7 +25,7 @@ class ArticlesController < ApplicationController
     impressionist(@article)
     @bookmarks = Bookmark.find_by(user_id: current_user.id, bookmarkable_id:@article.id, bookmarkable_type: "Article")
     @likes = Like.find_by(user_id: current_user.id, likeable_id:@article.id, likeable_type: "Article")
-    @likes_count = Like.where(user_id: current_user.id, likeable_id:@article.id, likeable_type: "Article").count
+    @likes_count = Like.where( likeable_id:@article.id, likeable_type: "Article").count
   end
 
   # GET /articles/new
@@ -34,6 +34,12 @@ class ArticlesController < ApplicationController
   end
 
   def find
+    search = params[:search].gsub('_', ' ')
+    if search == "all"
+      @articles = Article.all
+    else
+      @articles = Article.where("title LIKE ?", "%#{params[:search]}%")
+    end
   end
 
   def selected
@@ -101,6 +107,18 @@ class ArticlesController < ApplicationController
       redirect_to @article, alert: 'Failed to create comment.'
     end
   end
+
+  def destroy_comment
+    @comment = ArticlesComment.find(params[:comment_id])
+    @article = Article.find(params[:id])
+  
+    if @comment.destroy
+      redirect_to @article, notice: 'Comment deleted successfully.'
+    else
+      redirect_to @article, alert: 'Failed to delete comment.'
+    end
+  end
+
 
   private
     def comment_params

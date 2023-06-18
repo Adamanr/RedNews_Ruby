@@ -4,6 +4,7 @@ class AdminsController < ApplicationController
     @post_count = Event.all.count + Article.all.count
     @users = User.all
     @editions = Edition.where(verified: false)
+    @comments = ArticlesComment.all + EventComment.all
   end
 
   def user_post_count(user)

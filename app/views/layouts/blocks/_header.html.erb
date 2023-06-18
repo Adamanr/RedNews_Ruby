@@ -6,7 +6,7 @@
           x-ref="loading"
           class="fixed inset-0 z-50 flex items-center justify-center text-2xl font-semibold text-white bg-indigo-800"
         >
-          Loading.....
+          Загрузка.....
         </div>
 
         <!-- Sidebar -->
@@ -43,7 +43,7 @@
             </button>
 
             <!-- Logo -->
-            <a href="#">
+            <a href="/">
               <%= image_tag "rednews_logo.svg", class:"w-10 h-auto"%>
             </a>
 
@@ -73,14 +73,14 @@
               >
               <% if user_signed_in? %>
                    <a href="/users/<%= current_user.id %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
-                  >Your Profile</a
+                  >Профиль</a
                 >
 
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100", role:"menuitem" %>
+                <a href="/users/edit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Редактировать</a>
+                <%= link_to "Выход", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100", role:"menuitem" %>
               <% else%>
-                <a href="/users/sign_in" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign in</a>
-                <a href="/users/sign_up" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign up</a>
+                <a href="/users/sign_in" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Авторизация</a>
+                <a href="/users/sign_up" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Регистрация</a>
 
               <% end%>
 
@@ -95,7 +95,7 @@
           >
             <!-- Logo -->
             <div class="flex-shrink-0 py-4">
-              <a href="#">
+              <a href="/">
                 <%= image_tag "rednews_logo.svg", class:"w-10 h-auto"%>
               </a>
             </div>
@@ -119,7 +119,7 @@
                 </svg>
               </button>
               <!-- Messages button -->
-              <button
+              <%# <button
                 @click="(isSidebarOpen && currentSidebarTab == 'messagesTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'messagesTab'"
                 class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
                 :class="(isSidebarOpen && currentSidebarTab == 'messagesTab') ? 'text-white bg-indigo-600' : 'text-gray-500 bg-white'"
@@ -140,8 +140,8 @@
                     d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
                   />
                 </svg>
-              </button>
-              <!-- Notifications button -->
+              </button> %>
+              <%# <!-- Notifications button -->
               <button
                 @click="(isSidebarOpen && currentSidebarTab == 'notificationsTab') ? isSidebarOpen = false : isSidebarOpen = true; currentSidebarTab = 'notificationsTab'"
                 class="p-2 transition-colors rounded-lg shadow-md hover:bg-indigo-800 hover:text-white focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-white focus:ring-offset-2"
@@ -163,7 +163,7 @@
                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                   />
                 </svg>
-              </button>
+              </button> %>
             </div>
 
             <!-- User avatar -->
@@ -192,14 +192,14 @@
               >
                    <% if user_signed_in? %>
                    <a href="/users/<%= current_user.id %>" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem"
-                  >Your Profile</a
+                  >Профиль</a
                 >
 
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-                <%= link_to "Sign out", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100", role:"menuitem" %>
+                <a href="/users/edit" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Редактировать</a>
+                <%= link_to "Выйти", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100", role:"menuitem" %>
               <% else%>
-                <a href="/users/sign_in" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign in</a>
-                <a href="/users/sign_up" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign up</a>
+                <a href="/users/sign_in" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Авторизация</a>
+                <a href="/users/sign_up" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Регистрация</a>
 
               <% end%>
               </div>
@@ -219,7 +219,7 @@
             <nav x-show="currentSidebarTab == 'linksTab'" aria-label="Main" class="flex flex-col h-full">
               <!-- Logo -->
               <div class="flex items-center justify-center flex-shrink-0 py-10">
-                <a href="#">
+                <a href="/">
                   <!-- <svg
                     class="text-indigo-600"
                     width="96"
@@ -233,6 +233,7 @@
                       d="M7.691 34.703L13.95 28.2 32.09 52h8.087L18.449 23.418 38.594.813h-8.157L7.692 26.125V.812H.941V52h6.75V34.703zm27.61-7.793h17.156v-5.308H35.301v5.308zM89.19 13v22.512c0 3.703-1.02 6.574-3.058 8.613-2.016 2.04-4.934 3.059-8.754 3.059-3.773 0-6.68-1.02-8.719-3.059-2.039-2.063-3.058-4.945-3.058-8.648V.813h-6.68v34.874c.047 5.297 1.734 9.458 5.062 12.481 3.328 3.023 7.793 4.535 13.395 4.535l1.793-.07c5.156-.375 9.234-2.098 12.234-5.168 3.024-3.07 4.547-7.02 4.57-11.848V13h-6.785zM89 8h7V1h-7v7z"
                     />
                   </svg> -->
+                  
                   <%= image_tag "rednews_logo.svg", class:"w-24 h-auto"%>
                 </a>
               </div>
@@ -337,29 +338,29 @@
 
               </div>
               <div class="flex-shrink-0 p-4 mt-10">
-                <div class="hidden p-2 space-y-6 bg-gray-100 rounded-lg md:block">
+                <%# <div class="hidden p-2 space-y-6 bg-gray-100 rounded-lg md:block">
                   <button
                     class="w-full px-4 py-2 text-center text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100"
                   >
                     Оформить подписку
                   </button>
-                </div>
-
+                </div> %>
+<%# 
                 <button
                   class="w-full px-4 py-2 text-center text-white transition-colors bg-indigo-600 rounded-lg md:hidden hover:bg-indigo-700 focus:outline-none focus:ring focus:ring-indigo-600 focus:ring-offset-2 focus:ring-offset-gray-100"
                 >
                   Upgrade to pro
-                </button>
+                </button> %>
               </div>
             </nav>
 
-            <section x-show="currentSidebarTab == 'messagesTab'" class="px-4 py-6">
+            <%# <section x-show="currentSidebarTab == 'messagesTab'" class="px-4 py-6">
               <h2 class="text-xl">Messages</h2>
             </section>
 
             <section x-show="currentSidebarTab == 'notificationsTab'" class="px-4 py-6">
               <h2 class="text-xl">Notifications</h2>
-            </section>
+            </section> %>
           </div>
         </div>
         <div class="w-full">

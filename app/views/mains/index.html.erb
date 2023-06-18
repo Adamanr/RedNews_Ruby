@@ -8,15 +8,16 @@
     }
 </style>
 
-<div class="MainBlock max-w-7xl mx-auto  p-3">
-    <div class="md:container mx-auto md:px-4 lg:px-4">
-        <div class="h-full w-full  flex items-center">
-            <section class="w-full p-0 bg-cover bg-center py-32"
-            style="background: linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.4) 75.39%), url('https://sun9-31.userapi.com/impg/Y25raAw3vjoLZaZybTAPwqt1ikQtdchOcJO-8A/qydcmq3fZkI.jpg?size=1963x2160&quality=95&sign=c51d6b8833ac2ed11c18477a174ee2c3&type=album');
-             background-size:100%; background-position:center">
-                <div class="container mx-auto md:text-center lg:text-center text-black">
-			        <h1 class="md:text-5xl lg:text-5xl text-white text-4xl md:p-1 lg:p-1 font-medium mb-3">Добро пожаловать на портал <span class="text-rose-400">Red</span>News!</h1>
-		        </div>
+<div class="MainBlock max-w-7xl p-3 mx-auto ">
+    <div class="md:container mx-auto md:px-4  lg:px-4" >
+        <div class="h-full w-full shadow-xl flex items-center">
+            <section class="relative md:h-[55vh] w-full p-0 bg-cover bg-center "
+            style="background: linear-gradient(180deg, rgba(9, 0, 0, 0) 25.84%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.4) 75.39%), url(<%= asset_url("main/header.jpg") %>);
+             background-size:100%; ; background-position:center;background-repeat:no-repeat;">
+                <div class=" font-bold bottom-20 text-center justify-center h-full md:pt-44 md:pb-0 pt-20 pb-20  text-black">
+			        <h1 class="md:text-7xl font-bold  text-white text-2xl  md:mb-3"><span class="text-rose-400 font-bold">Red</span>News</h1>
+        
+                </div>
 	        </section>
         </div>
     </div>
@@ -42,7 +43,7 @@
                             Добро пожаловать на RedNews - ваш источник самых актуальных новостей из разных уголков мира! Наша команда из опытных журналистов и экспертов тщательно отслеживает события в реальном времени, чтобы предоставить вам только самую свежую и точную информацию.
                         </p>
                         <% if !user_signed_in? %>
-                            <a href="users/sign_up" class="text-blueGray-700 mt-12 border-2 font-bold border-gray-200 rounded-full p-3">Зарегистрируйтесь</a>
+                            <a href="users/sign_up" class="hover:border-rose-400 ps-5 pe-5 text-rose-400 text-xl  mt-12 border-2 font-bold border-gray-200 rounded-full p-3">Зарегистрируйтесь</a>
                         <% end %>
                     </div>
                 <div class="w-full md:w-4/12 md:px-4 lg:px-4 mr-auto ml-auto mt-5 lg:mt-0 md:mt-0">
@@ -60,7 +61,7 @@
                 <div class="flex flex-wrap items-center">
                     <div class="w-10/12 md:w-6/12 lg:w-4/12 px-12 md:px-4 mr-auto ml-auto -mt-78">
                         <div class="relative flex flex-col min-w-0 break-words  w-full mb-6 shadow-lg rounded-lg ">
-                            <img class="sn:hidden md:block lg:block"alt="..." src="https://sun2.is74.userapi.com/impg/uvNi0pRJYuN0s7PvAlAcYRZcSUSbgmkSSIA2yg/fb09LoAW30w.jpg?size=2560x2327&quality=95&sign=eecccd3df0bb38fcf66e25a88b09b5b8&type=album" class="w-full align-middle">
+                            <%= image_tag "main/image_2.jpg", class:"w-full md:show hidden align-middle sn:hidden md:block lg:block" %>
                         </div>
                     </div>
 
@@ -124,7 +125,7 @@
             <h4 class="text-4xl font-bold text-gray-800 tracking-widest uppercase text-center">FAQ</h4>
             <p class="text-center text-gray-600 text-sm mt-2">Блок, где мы отвечаем на ваши вопросы</p>
             <div class="space-y-2 px-2 xl:px-16 mt-12">
-                <details class=" dark:open:bg-slate-900 md:p-4 dark:open:ring-white/10   rounded-lg">
+                <details class=" open:bg-white dark:open:bg-slate-900 open:ring-1 open:ring-black/5 md:p-4 dark:open:ring-white/10 open:shadow-lg  rounded-lg">
                     <summary class="text-4xl font-bold flex leading-6 text-slate-900 dark:text-white  font-semibold select-none">
                        <span class="py-2 px-3 text-blue-600 px-4">Q. </span><span class="text-lg text-blue-600 font-bold">Почему стоит выбрать RedNews в качестве источника новостей?</span>
                     </summary>
@@ -188,12 +189,13 @@
                     </p>
                 </div>
                 <div class="text-center lg:text-left">
-                    <a class="block visible py-4 px-8 mb-4 text-xs font-semibold tracking-wide leading-none text-white bg-blue-500 rounded cursor-pointer sm:mr-3 sm:mb-0 sm:inline-block">
-                        Подписаться на рассылку
+                    <a href="https://t.me/RedNews_official" class="block visible py-4 px-8 mb-4 text-xs font-semibold tracking-wide leading-none text-white bg-blue-500 rounded cursor-pointer sm:mr-3 sm:mb-0 sm:inline-block">
+                        Подписаться на канал портала в телеграмме
                     </a>
-                    <a class="block visible py-4 px-8 text-xs font-semibold leading-none bg-white rounded border border-solid cursor-pointer sm:inline-block border-slate-200 text-slate-500">
+                    <%# <a class="block visible py-4 px-8 text-xs font-semibold leading-none bg-white rounded border border-solid cursor-pointer sm:inline-block border-slate-200 text-slate-500">
                         Как это работает?
-                    </a>
+                    </a> %>
+                    
                 </div>
             </div>
 

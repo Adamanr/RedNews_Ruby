@@ -9,7 +9,7 @@
 </style>
 <section class="tagSection justify-center antialiased overflow-y-scroll h-full">
 
-    <h1 class="max-w-6xl mt-4 mx-auto p-4 mb-4 sm:px-6 text-3xl font-bold ">Статьи по тэгу - <span class="text-blue-500"><%= params[:tag].gsub('_',' ') %></span></h1>
+    <h1 class="max-w-6xl mt-4 mx-auto p-4 mb-4 sm:px-6 text-3xl font-bold ">Статьи по тэгу - <span class="text-blue-500"><%= params[:tag].gsub('_',' ').to_s.capitalize %></span></h1>
     <% @articles.each do |a|%>
 
         <div class="max-w-6xl sn:mt-4 md:mt-0 mx-auto p-4 sm:px-6 text-gray-200">
@@ -27,7 +27,7 @@
                             <ul class="flex flex-wrap text-xs font-medium -m-1">
                                 <% a.tags.each do |t| %>
                                 <li class="m-1">
-                                    <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name.gsub('_',' ') %></a>
+                                    <a class="inline-flex text-center text-gray-100 py-1 px-3 rounded-full bg-purple-600 hover:bg-purple-700 transition duration-150 ease-in-out" href="/articles/tag/<%= t.name %>"><%= t.name.gsub('_',' ').to_s.capitalize %></a>
                                 </li>
                                 <% end %>
                             </ul>
@@ -39,7 +39,7 @@
                     <h1 class="text-lg text-gray-500  flex-grow "><%= a.content.to_s[0...150] %>..</h1>
                     <footer class="flex items-center mt-4">
                         <a href="/articles/<%= a.id %>">
-                            <img class="rounded-full h-8 w-8 flex-shrink-0 mr-4" src="<%= url_for(a.header) %>" alt="Author 04">
+                            <img class="rounded-full h-8 w-8 flex-shrink-0 mr-4" src="<%= url_for(a.user.avatar) %>" alt="Author 04">
                         </a>
                         <div>
                             <a class="font-medium text-gray-700 hover:text-gray-500 transition duration-150 ease-in-out" href="/users/<%=a.user.id %>"><%= a.user.login %></a>
@@ -57,7 +57,7 @@
 <!-- More components -->
 <div x-show="open" class="fixed bottom-0 right-0 w-full md:bottom-8 md:right-12 md:w-auto z-60" x-data="{ open: true }">
     <div class="bg-gray-800 text-gray-50 text-sm p-3 md:rounded shadow-lg flex justify-between">
-        <div>👉 <a class="hover:underline ml-1" href="/articles" target="_blank">Вернуться к статьям</a></div>
+        <div>👉 <a class="hover:underline ml-1" href="/articles" >Вернуться к статьям</a></div>
         <button class="text-gray-500 hover:text-gray-400 ml-5" @click="open = false">
             <span class="sr-only">Close</span>
             <svg class="w-4 h-4 flex-shrink-0 fill-current" viewBox="0 0 16 16">
